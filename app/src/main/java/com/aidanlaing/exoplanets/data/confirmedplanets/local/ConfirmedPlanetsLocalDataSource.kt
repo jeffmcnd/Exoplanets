@@ -30,6 +30,11 @@ private constructor(
                 }
     }
 
+    override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
+        val confirmedPlanetLocal = confirmedPlanetsDao.get(planetName) ?: return null
+        return ConfirmedPlanet.from(confirmedPlanetLocal)
+    }
+
     override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) {
         val localConfirmedPlanets = confirmedPlanets.map { confirmedPlanet ->
             ConfirmedPlanetLocal.from(confirmedPlanet)

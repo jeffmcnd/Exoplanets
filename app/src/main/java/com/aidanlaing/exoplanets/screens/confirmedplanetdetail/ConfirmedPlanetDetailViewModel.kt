@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.screens.main
+package com.aidanlaing.exoplanets.screens.confirmedplanetdetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,38 +11,38 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
 
-class MainViewModel(
+class ConfirmedPlanetDetailViewModel(
         private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
-) : ViewModel() {
+): ViewModel() {
 
-    private val confirmedPlanets = MutableLiveData<ArrayList<ConfirmedPlanet>>()
+    private val confirmedPlanet = MutableLiveData<ConfirmedPlanet>()
     private val loading = MutableLiveData<Boolean>()
     private val noConnection = MutableLiveData<Boolean>()
     private val generalError = MutableLiveData<Boolean>()
 
-    fun getConfirmedPlanets(): LiveData<ArrayList<ConfirmedPlanet>> {
-        if (confirmedPlanets.value == null) {
-            loadConfirmedPlanets()
+    fun getConfirmedPlanet(planetName: String): LiveData<ConfirmedPlanet> {
+        if (confirmedPlanet.value == null) {
+            loadConfirmedPlanet(planetName)
         }
-        return confirmedPlanets
+        return confirmedPlanet
     }
 
     fun showLoading(): LiveData<Boolean> = loading
     fun showNoConnection(): LiveData<Boolean> = noConnection
     fun showGeneralError(): LiveData<Boolean> = generalError
 
-    fun retryClicked() {
-        loadConfirmedPlanets()
+    fun retryClicked(planetName: String) {
+        loadConfirmedPlanet(planetName)
     }
 
-    private fun loadConfirmedPlanets() = launch(UI) {
+    private fun loadConfirmedPlanet(planetName: String) = launch(UI) {
         loading.value = true
         noConnection.value = false
         generalError.value = false
 
         try {
-            confirmedPlanets.value = withContext(CommonPool) {
-                confirmedPlanetsDataSource.getConfirmedPlanets()
+            confirmedPlanet.value = withContext(CommonPool) {
+                confirmedPlanetsDataSource.getConfirmedPlanet(planetName)
             }
         } catch (exception: IOException) {
             noConnection.value = true
@@ -52,5 +52,4 @@ class MainViewModel(
 
         loading.value = false
     }
-
 }

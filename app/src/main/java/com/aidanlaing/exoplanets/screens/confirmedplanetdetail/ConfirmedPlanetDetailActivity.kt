@@ -1,41 +1,39 @@
-package com.aidanlaing.exoplanets.screens.main
+package com.aidanlaing.exoplanets.screens.confirmedplanetdetail
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
-import com.aidanlaing.exoplanets.common.adapters.confirmedplanets.ConfirmedPlanetsAdapter
-import com.aidanlaing.exoplanets.screens.confirmedplanetdetail.ConfirmedPlanetDetailActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_confirmed_planet_detail.*
 
-class MainActivity : AppCompatActivity() {
+class ConfirmedPlanetDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_confirmed_planet_detail)
 
         progressBar.visibility = View.GONE
         noConnectionView.visibility = View.GONE
         errorView.visibility = View.GONE
 
-        val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter({ confirmedPlanet ->
-            goToConfirmedPlanetDetail(confirmedPlanet.planetName)
-        })
-        confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
-        confirmedPlanetsRv.layoutManager = LinearLayoutManager(this)
+        val planetName = intent.getStringExtra(Constants.PLANET_NAME)
+        if (planetName == null) {
+            showToast(getString(R.string.error_unexpected))
+            finish()
+            return
+        }
 
         val viewModel = ViewModelProviders
                 .of(this, Injector.provideViewModelFactory(this))
-                .get(MainViewModel::class.java)
+                .get(ConfirmedPlanetDetailViewModel::class.java)
 
-        viewModel.getConfirmedPlanets().observe(this, Observer { confirmedPlanets ->
-            confirmedPlanetsAdapter.replaceItems(confirmedPlanets)
+        viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
+
         })
 
         viewModel.showLoading().observe(this, Observer { show ->
@@ -54,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 errorView.setTitleText(getString(R.string.error))
                 errorView.setInfoText(getString(R.string.error_info))
                 errorView.setRetryListener {
-                    viewModel.retryClicked()
+                    viewModel.retryClicked(planetName)
                 }
             } else {
                 errorView.visibility = View.GONE
@@ -62,9 +60,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun goToConfirmedPlanetDetail(planetName: String) {
-        Intent(this, ConfirmedPlanetDetailActivity::class.java)
-                .putExtra(Constants.PLANET_NAME, planetName)
-                .run { startActivity(this) }
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

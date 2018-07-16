@@ -10,9 +10,16 @@ import kotlinx.android.synthetic.main.item_confirmed_planet.view.*
 
 class ConfirmedPlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(confirmedPlanet: ConfirmedPlanet) = with(itemView) {
+    fun bind(
+            confirmedPlanet: ConfirmedPlanet,
+            confirmedPlanetClickListener: (confirmedPlanet: ConfirmedPlanet) -> Unit
+    ) = with(itemView) {
         planetNameTv.text = confirmedPlanet.planetName
         hostStarNameTv.text = confirmedPlanet.hostStarName
+
+        layout.setOnClickListener {
+            confirmedPlanetClickListener(confirmedPlanet)
+        }
     }
 
     companion object {

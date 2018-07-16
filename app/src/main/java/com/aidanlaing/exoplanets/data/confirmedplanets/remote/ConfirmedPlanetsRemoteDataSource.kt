@@ -33,6 +33,16 @@ private constructor(
                 .filterNotNullTo(ArrayList())
     }
 
+    override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
+        return confirmedPlanetsApi.get(where = "pl_name like $planetName")
+                .await()
+                .map { confirmedPlanetRemote ->
+                    ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)
+                }
+                .filterNotNull()
+                .firstOrNull()
+    }
+
     override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) =
             throw InvalidOperationException()
 }

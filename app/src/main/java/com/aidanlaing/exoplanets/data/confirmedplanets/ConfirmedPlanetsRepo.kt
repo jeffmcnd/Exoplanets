@@ -54,6 +54,23 @@ private constructor(
         return remote
     }
 
+    override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
+        val cached = cachedConfirmedPlanets[planetName]
+        if (cached != null) return cached
+
+        val local = localDataSource.getConfirmedPlanet(planetName)
+        if (local != null) {
+            cacheConfirmedPlanet(local)
+            return local
+        }
+
+        val remote = remoteDataSource.getConfirmedPlanet(planetName)
+        if (remote != null) {
+            cacheConfirmedPlanet(remote)
+        }
+        return remote
+    }
+
     override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) {
         localDataSource.saveConfirmedPlanets(confirmedPlanets)
     }
