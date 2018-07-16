@@ -24,7 +24,7 @@ private constructor(
         }
     }
 
-    override suspend fun getConfirmedPlanets(refresh: Boolean): ArrayList<ConfirmedPlanet> {
+    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
         return confirmedPlanetsApi.get()
                 .await()
                 .map { confirmedPlanetRemote ->

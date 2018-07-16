@@ -6,9 +6,9 @@
     <color name="colorAccent">#FFFF4081</color>
 
     <color name="white">#FFFFFFFF</color>
-    <color name="lightGray">#FFF5F5F5</color>
+    <color name="lightGray">#FFF7F7F7</color>
 
-    <color name="textDefault">#FF7F7F7F</color>
+    <color name="textNormal">#FF7F7F7F</color>
     <color name="textHeader">#FF333333</color>
 
 </resources>

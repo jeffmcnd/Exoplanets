@@ -36,23 +36,19 @@ private constructor(
         cachedConfirmedPlanets[confirmedPlanet.planetName] = confirmedPlanet
     }
 
-    override suspend fun getConfirmedPlanets(refresh: Boolean): ArrayList<ConfirmedPlanet> {
-        if (!refresh) {
-            val cached = cachedConfirmedPlanets.values
-            if (cached.isNotEmpty()) {
-                return ArrayList(cached)
-            }
-
-            val local = localDataSource.getConfirmedPlanets(refresh)
-            if (local.isNotEmpty()) {
-                cacheConfirmedPlanets(local)
-                return local
-            }
-        } else {
-            cachedConfirmedPlanets.clear()
+    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
+        val cached = cachedConfirmedPlanets.values
+        if (cached.isNotEmpty()) {
+            return ArrayList(cached)
         }
 
-        val remote = remoteDataSource.getConfirmedPlanets(refresh)
+        val local = localDataSource.getConfirmedPlanets()
+        if (local.isNotEmpty()) {
+            cacheConfirmedPlanets(local)
+            return local
+        }
+
+        val remote = remoteDataSource.getConfirmedPlanets()
         cacheConfirmedPlanets(remote)
         saveConfirmedPlanets(remote)
         return remote

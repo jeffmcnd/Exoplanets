@@ -2,7 +2,6 @@ package com.aidanlaing.exoplanets.screens.main
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        progressBar.visibility = View.GONE
+        noConnectionView.visibility = View.GONE
+        errorView.visibility = View.GONE
+
         val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter()
         confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
         confirmedPlanetsRv.layoutManager = LinearLayoutManager(this)
@@ -27,21 +30,31 @@ class MainActivity : AppCompatActivity() {
                 Injector.provideViewModelFactory(this)
         ).get(MainViewModel::class.java)
 
-        viewModel.getConfirmedPlanets(true).observe(this, Observer { confirmedPlanets ->
+        viewModel.getConfirmedPlanets().observe(this, Observer { confirmedPlanets ->
             confirmedPlanetsAdapter.replaceItems(confirmedPlanets)
         })
 
-        viewModel.getError().observe(this, Observer { exception ->
-            showToast(exception.localizedMessage)
+        viewModel.showGeneralError().observe(this, Observer { show ->
+            if (show) {
+                errorView.visibility = View.VISIBLE
+                errorView.setTitleText(getString(R.string.error))
+                errorView.setInfoText(getString(R.string.error_info))
+                errorView.setRetryListener {
+                    viewModel.retryClicked()
+                }
+            } else {
+                errorView.visibility = View.GONE
+            }
         })
 
-        viewModel.getLoading().observe(this, Observer { loading ->
-            if (loading) progressBar.visibility = View.VISIBLE
+        viewModel.showNoConnection().observe(this, Observer { show ->
+            if (show) noConnectionView.visibility = View.VISIBLE
+            else noConnectionView.visibility = View.GONE
+        })
+
+        viewModel.showLoading().observe(this, Observer { show ->
+            if (show) progressBar.visibility = View.VISIBLE
             else progressBar.visibility = View.GONE
         })
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

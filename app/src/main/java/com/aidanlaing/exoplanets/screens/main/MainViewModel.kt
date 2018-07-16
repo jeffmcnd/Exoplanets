@@ -9,34 +9,50 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
+import java.io.IOException
 
 class MainViewModel(
         private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
 ) : ViewModel() {
 
     private val confirmedPlanets = MutableLiveData<ArrayList<ConfirmedPlanet>>()
-    private val error = MutableLiveData<Exception>()
+    private val generalError = MutableLiveData<Boolean>()
+    private val noConnection = MutableLiveData<Boolean>()
     private val loading = MutableLiveData<Boolean>()
 
-    fun getConfirmedPlanets(refresh: Boolean): LiveData<ArrayList<ConfirmedPlanet>> {
-        loadConfirmedPlanets(refresh)
+    fun getConfirmedPlanets(): LiveData<ArrayList<ConfirmedPlanet>> {
+        if (confirmedPlanets.value == null) {
+            loadConfirmedPlanets()
+        }
         return confirmedPlanets
     }
 
-    fun getError(): LiveData<Exception> = error
+    fun showGeneralError(): LiveData<Boolean> = generalError
 
-    fun getLoading(): LiveData<Boolean> = loading
+    fun showNoConnection(): LiveData<Boolean> = noConnection
 
-    private fun loadConfirmedPlanets(refresh: Boolean) = launch(UI) {
+    fun showLoading(): LiveData<Boolean> = loading
+
+    fun retryClicked() {
+        loadConfirmedPlanets()
+    }
+
+    private fun loadConfirmedPlanets() = launch(UI) {
+        loading.value = true
+        noConnection.value = false
+        generalError.value = false
+
         try {
-            loading.value = true
             confirmedPlanets.value = withContext(CommonPool) {
-                confirmedPlanetsDataSource.getConfirmedPlanets(refresh)
+                confirmedPlanetsDataSource.getConfirmedPlanets()
             }
-            loading.value = false
+        } catch (ioException: IOException) {
+            noConnection.value = true
         } catch (exception: Exception) {
-            error.value = exception
+            generalError.value = true
         }
+
+        loading.value = false
     }
 
 }
