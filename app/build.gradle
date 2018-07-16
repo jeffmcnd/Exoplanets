@@ -20,7 +20,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "EXOPLANET_BASE_URL", "\"https://exoplanetarchive.ipac.caltech.edu/\""
+        }
+
         release {
+            buildConfigField "String", "EXOPLANET_BASE_URL", "\"https://exoplanetarchive.ipac.caltech.edu/\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -30,6 +36,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
 
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
@@ -38,10 +46,18 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$rootProject.retrofitCoroutinesAdapterVersion"
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
 
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
