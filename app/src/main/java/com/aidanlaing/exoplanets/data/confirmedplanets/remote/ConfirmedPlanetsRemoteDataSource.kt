@@ -34,7 +34,7 @@ private constructor(
     }
 
     override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
-        return confirmedPlanetsApi.get(where = "pl_name like $planetName")
+        return confirmedPlanetsApi.get(where = "pl_name like '$planetName'")
                 .await()
                 .map { confirmedPlanetRemote ->
                     ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)

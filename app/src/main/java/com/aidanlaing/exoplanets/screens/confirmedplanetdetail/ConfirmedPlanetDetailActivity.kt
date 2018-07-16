@@ -33,7 +33,7 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
                 .get(ConfirmedPlanetDetailViewModel::class.java)
 
         viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
-
+            planetNameTv.text = confirmedPlanet.planetName
         })
 
         viewModel.showLoading().observe(this, Observer { show ->
