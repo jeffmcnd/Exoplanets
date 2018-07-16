@@ -1,7 +1,8 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 
 @Entity(tableName = "confirmed_planet")
 data class ConfirmedPlanetLocal(

@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.remote
 
 import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET

@@ -1,4 +1,7 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.local
+
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
 
 class ConfirmedPlanetsLocalDataSource
 private constructor(
@@ -12,13 +15,15 @@ private constructor(
 
         fun getInstance(
                 confirmedPlanetsDao: ConfirmedPlanetsDao
-        ): ConfirmedPlanetsLocalDataSource = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: ConfirmedPlanetsLocalDataSource(confirmedPlanetsDao)
+        ): ConfirmedPlanetsLocalDataSource = INSTANCE
+                ?: synchronized(this) {
+            INSTANCE
+                    ?: ConfirmedPlanetsLocalDataSource(confirmedPlanetsDao)
                     .also { INSTANCE = it }
         }
     }
 
-    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
+    override suspend fun getConfirmedPlanets(refresh: Boolean): ArrayList<ConfirmedPlanet> {
         return confirmedPlanetsDao.get()
                 .mapTo(ArrayList()) { confirmedPlanetLocal ->
                     ConfirmedPlanet.from(confirmedPlanetLocal)

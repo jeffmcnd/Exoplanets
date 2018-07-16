@@ -1,6 +1,8 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.remote
 
 import com.aidanlaing.exoplanets.common.exceptions.InvalidOperationException
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
 
 class ConfirmedPlanetsRemoteDataSource
 private constructor(
@@ -14,13 +16,15 @@ private constructor(
 
         fun getInstance(
                 confirmedPlanetsApi: ConfirmedPlanetsApi
-        ): ConfirmedPlanetsRemoteDataSource = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: ConfirmedPlanetsRemoteDataSource(confirmedPlanetsApi)
+        ): ConfirmedPlanetsRemoteDataSource = INSTANCE
+                ?: synchronized(this) {
+            INSTANCE
+                    ?: ConfirmedPlanetsRemoteDataSource(confirmedPlanetsApi)
                     .also { INSTANCE = it }
         }
     }
 
-    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
+    override suspend fun getConfirmedPlanets(refresh: Boolean): ArrayList<ConfirmedPlanet> {
         return confirmedPlanetsApi.get()
                 .await()
                 .map { confirmedPlanetRemote ->

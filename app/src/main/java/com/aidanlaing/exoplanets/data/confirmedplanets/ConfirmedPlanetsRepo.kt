@@ -14,10 +14,12 @@ private constructor(
         fun getInstance(
                 remoteDataSource: ConfirmedPlanetsDataSource,
                 localDataSource: ConfirmedPlanetsDataSource
-        ): ConfirmedPlanetsRepo = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: ConfirmedPlanetsRepo(remoteDataSource, localDataSource)
-                    .also { INSTANCE = it }
-        }
+        ): ConfirmedPlanetsRepo = INSTANCE
+                ?: synchronized(this) {
+                    INSTANCE
+                            ?: ConfirmedPlanetsRepo(remoteDataSource, localDataSource)
+                                    .also { INSTANCE = it }
+                }
 
         fun destroyInstance() {
             INSTANCE = null
@@ -34,18 +36,26 @@ private constructor(
         cachedConfirmedPlanets[confirmedPlanet.planetName] = confirmedPlanet
     }
 
-    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
-        val localConfirmedPlanets = localDataSource.getConfirmedPlanets()
-        if (localConfirmedPlanets.isNotEmpty()) {
-            cacheConfirmedPlanets(localConfirmedPlanets)
-            return localConfirmedPlanets
+    override suspend fun getConfirmedPlanets(refresh: Boolean): ArrayList<ConfirmedPlanet> {
+        if (!refresh) {
+            val cached = cachedConfirmedPlanets.values
+            if (cached.isNotEmpty()) {
+                return ArrayList(cached)
+            }
+
+            val local = localDataSource.getConfirmedPlanets(refresh)
+            if (local.isNotEmpty()) {
+                cacheConfirmedPlanets(local)
+                return local
+            }
+        } else {
+            cachedConfirmedPlanets.clear()
         }
 
-        val remoteConfirmedPlanets = remoteDataSource.getConfirmedPlanets()
-        cacheConfirmedPlanets(remoteConfirmedPlanets)
-        saveConfirmedPlanets(remoteConfirmedPlanets)
-
-        return remoteConfirmedPlanets
+        val remote = remoteDataSource.getConfirmedPlanets(refresh)
+        cacheConfirmedPlanets(remote)
+        saveConfirmedPlanets(remote)
+        return remote
     }
 
     override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) {

@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.remote
 
 import com.google.gson.annotations.SerializedName
 

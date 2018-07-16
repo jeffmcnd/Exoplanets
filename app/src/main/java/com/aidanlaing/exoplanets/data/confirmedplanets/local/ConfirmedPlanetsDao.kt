@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.confirmedplanets.local
 
 import androidx.room.Dao
 import androidx.room.Insert

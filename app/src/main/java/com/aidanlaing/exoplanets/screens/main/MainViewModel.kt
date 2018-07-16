@@ -2,7 +2,6 @@ package com.aidanlaing.exoplanets.screens.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
@@ -16,25 +15,27 @@ class MainViewModel(
 ) : ViewModel() {
 
     private val confirmedPlanets = MutableLiveData<ArrayList<ConfirmedPlanet>>()
+    private val error = MutableLiveData<Exception>()
+    private val loading = MutableLiveData<Boolean>()
 
-    fun getConfirmedPlanets(): LiveData<ArrayList<ConfirmedPlanet>> {
-        loadConfirmedPlanets()
+    fun getConfirmedPlanets(refresh: Boolean): LiveData<ArrayList<ConfirmedPlanet>> {
+        loadConfirmedPlanets(refresh)
         return confirmedPlanets
     }
 
-    fun getConfirmedPlanetsSize(): LiveData<String> = Transformations
-            .map(confirmedPlanets) { confirmedPlanets ->
-                confirmedPlanets.size.toString()
-            }
+    fun getError(): LiveData<Exception> = error
 
-    private fun loadConfirmedPlanets() = launch(UI) {
+    fun getLoading(): LiveData<Boolean> = loading
+
+    private fun loadConfirmedPlanets(refresh: Boolean) = launch(UI) {
         try {
-            val result = withContext(CommonPool) {
-                confirmedPlanetsDataSource.getConfirmedPlanets()
+            loading.value = true
+            confirmedPlanets.value = withContext(CommonPool) {
+                confirmedPlanetsDataSource.getConfirmedPlanets(refresh)
             }
-            confirmedPlanets.value = result
+            loading.value = false
         } catch (exception: Exception) {
-            println(exception.message)
+            error.value = exception
         }
     }
 

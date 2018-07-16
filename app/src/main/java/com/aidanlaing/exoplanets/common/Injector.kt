@@ -3,11 +3,11 @@ package com.aidanlaing.exoplanets.common
 import android.content.Context
 import com.aidanlaing.exoplanets.BuildConfig
 import com.aidanlaing.exoplanets.data.AppDatabase
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsApi
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDao
+import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsApi
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsLocalDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsRemoteDataSource
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsLocalDataSource
+import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsRemoteDataSource
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsRepo
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient

@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetLocal
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDao
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetLocal
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
 
 /**
  * Created by Aidan Laing on 2017-12-09.
