@@ -3,17 +3,19 @@ package com.aidanlaing.exoplanets.screens.confirmedplanetdetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
+import kotlin.coroutines.experimental.CoroutineContext
 
 class ConfirmedPlanetDetailViewModel(
+        private val uiContext: CoroutineContext,
+        private val ioContext: CoroutineContext,
         private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
-): ViewModel() {
+) : ViewModel() {
 
     private val confirmedPlanet = MutableLiveData<ConfirmedPlanet>()
     private val loading = MutableLiveData<Boolean>()
@@ -35,21 +37,27 @@ class ConfirmedPlanetDetailViewModel(
         loadConfirmedPlanet(planetName)
     }
 
-    private fun loadConfirmedPlanet(planetName: String) = launch(UI) {
+    private fun loadConfirmedPlanet(planetName: String) = launch(uiContext) {
         loading.value = true
         noConnection.value = false
         generalError.value = false
 
-        try {
-            confirmedPlanet.value = withContext(CommonPool) {
-                confirmedPlanetsDataSource.getConfirmedPlanet(planetName)
-            }
-        } catch (exception: IOException) {
-            noConnection.value = true
-        } catch (exception: Exception) {
-            generalError.value = true
+        val result = withContext(ioContext) {
+            confirmedPlanetsDataSource.getConfirmedPlanet(planetName)
+        }
+
+        when (result) {
+            is Result.Success -> confirmedPlanet.value = result.data
+            is Result.Failure -> onError(result.error)
         }
 
         loading.value = false
+    }
+
+    private fun onError(exception: Exception) {
+        when (exception) {
+            is IOException -> noConnection.value = true
+            else -> generalError.value = true
+        }
     }
 }

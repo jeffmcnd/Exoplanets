@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
 import com.aidanlaing.exoplanets.screens.confirmedplanetdetail.ConfirmedPlanetDetailViewModel
 import com.aidanlaing.exoplanets.screens.main.MainViewModel
+import kotlin.coroutines.experimental.CoroutineContext
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(
+        private val uiContext: CoroutineContext,
+        private val ioContext: CoroutineContext,
         private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
 ) : ViewModelProvider.Factory {
 
@@ -15,10 +18,10 @@ class ViewModelFactory(
         val viewModel: ViewModel? = when {
 
             modelClass.isAssignableFrom(MainViewModel::class.java) ->
-                MainViewModel(confirmedPlanetsDataSource)
+                MainViewModel(uiContext, ioContext, confirmedPlanetsDataSource)
 
             modelClass.isAssignableFrom(ConfirmedPlanetDetailViewModel::class.java) ->
-                ConfirmedPlanetDetailViewModel(confirmedPlanetsDataSource)
+                ConfirmedPlanetDetailViewModel(uiContext, ioContext, confirmedPlanetsDataSource)
 
             else -> null
 

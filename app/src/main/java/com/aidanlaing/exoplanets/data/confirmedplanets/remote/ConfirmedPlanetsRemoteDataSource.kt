@@ -1,6 +1,7 @@
 package com.aidanlaing.exoplanets.data.confirmedplanets.remote
 
 import com.aidanlaing.exoplanets.common.exceptions.InvalidOperationException
+import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
 
@@ -16,33 +17,37 @@ private constructor(
 
         fun getInstance(
                 confirmedPlanetsApi: ConfirmedPlanetsApi
-        ): ConfirmedPlanetsRemoteDataSource = INSTANCE
-                ?: synchronized(this) {
-            INSTANCE
-                    ?: ConfirmedPlanetsRemoteDataSource(confirmedPlanetsApi)
+        ): ConfirmedPlanetsRemoteDataSource = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: ConfirmedPlanetsRemoteDataSource(confirmedPlanetsApi)
                     .also { INSTANCE = it }
         }
     }
 
-    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
-        return confirmedPlanetsApi.get()
+    override suspend fun getConfirmedPlanets(): Result<ArrayList<ConfirmedPlanet>> = try {
+        confirmedPlanetsApi.get()
                 .await()
-                .map { confirmedPlanetRemote ->
+                .mapNotNullTo(ArrayList()) { confirmedPlanetRemote ->
                     ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)
                 }
-                .filterNotNullTo(ArrayList())
+                .let { list -> Result.Success(list) }
+
+    } catch (exception: Exception) {
+        Result.Failure(exception)
     }
 
-    override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
-        return confirmedPlanetsApi.get(where = "pl_name like '$planetName'")
+    override suspend fun getConfirmedPlanet(planetName: String): Result<ConfirmedPlanet> = try {
+        confirmedPlanetsApi.get(where = "pl_name like '$planetName'")
                 .await()
-                .map { confirmedPlanetRemote ->
+                .mapNotNull { confirmedPlanetRemote ->
                     ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)
                 }
-                .filterNotNull()
-                .firstOrNull()
+                .first()
+                .let { confirmedPlanet -> Result.Success(confirmedPlanet) }
+
+    } catch (exception: Exception) {
+        Result.Failure(exception)
     }
 
     override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) =
-            throw InvalidOperationException()
+            Result.Failure(InvalidOperationException())
 }

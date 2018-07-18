@@ -1,5 +1,7 @@
 package com.aidanlaing.exoplanets.data.confirmedplanets
 
+import com.aidanlaing.exoplanets.data.Result
+
 class ConfirmedPlanetsRepo
 private constructor(
         private val remoteDataSource: ConfirmedPlanetsDataSource,
@@ -14,12 +16,10 @@ private constructor(
         fun getInstance(
                 remoteDataSource: ConfirmedPlanetsDataSource,
                 localDataSource: ConfirmedPlanetsDataSource
-        ): ConfirmedPlanetsRepo = INSTANCE
-                ?: synchronized(this) {
-                    INSTANCE
-                            ?: ConfirmedPlanetsRepo(remoteDataSource, localDataSource)
-                                    .also { INSTANCE = it }
-                }
+        ): ConfirmedPlanetsRepo = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: ConfirmedPlanetsRepo(remoteDataSource, localDataSource)
+                    .also { INSTANCE = it }
+        }
 
         fun destroyInstance() {
             INSTANCE = null
@@ -36,42 +36,58 @@ private constructor(
         cachedConfirmedPlanets[confirmedPlanet.planetName] = confirmedPlanet
     }
 
-    override suspend fun getConfirmedPlanets(): ArrayList<ConfirmedPlanet> {
+    override suspend fun getConfirmedPlanets(): Result<ArrayList<ConfirmedPlanet>> {
         val cached = cachedConfirmedPlanets.values
         if (cached.isNotEmpty()) {
-            return ArrayList(cached)
+            return Result.Success(ArrayList(cached))
         }
 
-        val local = localDataSource.getConfirmedPlanets()
-        if (local.isNotEmpty()) {
-            cacheConfirmedPlanets(local)
-            return local
+        val localResult = localDataSource.getConfirmedPlanets()
+        when (localResult) {
+            is Result.Success -> {
+                val data = localResult.data
+                if (data.isNotEmpty()) {
+                    cacheConfirmedPlanets(data)
+                    return localResult
+                }
+            }
         }
 
-        val remote = remoteDataSource.getConfirmedPlanets()
-        cacheConfirmedPlanets(remote)
-        saveConfirmedPlanets(remote)
-        return remote
+        val remoteResult = remoteDataSource.getConfirmedPlanets()
+        return when (remoteResult) {
+            is Result.Success -> {
+                val data = remoteResult.data
+                cacheConfirmedPlanets(data)
+                saveConfirmedPlanets(data)
+                remoteResult
+            }
+            is Result.Failure -> remoteResult
+        }
     }
 
-    override suspend fun getConfirmedPlanet(planetName: String): ConfirmedPlanet? {
+    override suspend fun getConfirmedPlanet(planetName: String): Result<ConfirmedPlanet> {
         val cached = cachedConfirmedPlanets[planetName]
-        if (cached != null) return cached
+        if (cached != null) return Result.Success(cached)
 
-        val local = localDataSource.getConfirmedPlanet(planetName)
-        if (local != null) {
-            cacheConfirmedPlanet(local)
-            return local
+        val localResult = localDataSource.getConfirmedPlanet(planetName)
+        when (localResult) {
+            is Result.Success -> {
+                cacheConfirmedPlanet(localResult.data)
+                return localResult
+            }
         }
 
-        val remote = remoteDataSource.getConfirmedPlanet(planetName)
-        if (remote != null) {
-            cacheConfirmedPlanet(remote)
+        val remoteResult = remoteDataSource.getConfirmedPlanet(planetName)
+        return when (remoteResult) {
+            is Result.Success -> {
+                cacheConfirmedPlanet(remoteResult.data)
+                remoteResult
+            }
+            is Result.Failure -> remoteResult
         }
-        return remote
     }
 
-    override suspend fun saveConfirmedPlanets(confirmedPlanets: ArrayList<ConfirmedPlanet>) {
-        localDataSource.saveConfirmedPlanets(confirmedPlanets)
-    }
+    override suspend fun saveConfirmedPlanets(
+            confirmedPlanets: ArrayList<ConfirmedPlanet>
+    ): Result<ArrayList<ConfirmedPlanet>> = localDataSource.saveConfirmedPlanets(confirmedPlanets)
 }

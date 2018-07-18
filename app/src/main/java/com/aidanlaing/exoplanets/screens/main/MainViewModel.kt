@@ -3,15 +3,17 @@ package com.aidanlaing.exoplanets.screens.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
+import kotlin.coroutines.experimental.CoroutineContext
 
 class MainViewModel(
+        private val uiContext: CoroutineContext,
+        private val ioContext: CoroutineContext,
         private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
 ) : ViewModel() {
 
@@ -35,22 +37,28 @@ class MainViewModel(
         loadConfirmedPlanets()
     }
 
-    private fun loadConfirmedPlanets() = launch(UI) {
+    private fun loadConfirmedPlanets() = launch(uiContext) {
         loading.value = true
         noConnection.value = false
         generalError.value = false
 
-        try {
-            confirmedPlanets.value = withContext(CommonPool) {
-                confirmedPlanetsDataSource.getConfirmedPlanets()
-            }
-        } catch (exception: IOException) {
-            noConnection.value = true
-        } catch (exception: Exception) {
-            generalError.value = true
+        val result = withContext(ioContext) {
+            confirmedPlanetsDataSource.getConfirmedPlanets()
+        }
+
+        when (result) {
+            is Result.Success -> confirmedPlanets.value = result.data
+            is Result.Failure -> onError(result.error)
         }
 
         loading.value = false
+    }
+
+    private fun onError(exception: Exception) {
+        when (exception) {
+            is IOException -> noConnection.value = true
+            else -> generalError.value = true
+        }
     }
 
 }

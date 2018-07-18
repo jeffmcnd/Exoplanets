@@ -41,6 +41,8 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.appCompatVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.appCompatVersion"
+    implementation "androidx.cardview:cardview:$rootProject.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$rootProject.lifecycleVersion"

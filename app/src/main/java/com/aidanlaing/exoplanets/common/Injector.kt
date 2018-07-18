@@ -3,18 +3,21 @@ package com.aidanlaing.exoplanets.common
 import android.content.Context
 import com.aidanlaing.exoplanets.BuildConfig
 import com.aidanlaing.exoplanets.data.AppDatabase
-import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsApi
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsLocalDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsRemoteDataSource
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsRepo
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
+import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsLocalDataSource
+import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsApi
+import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsRemoteDataSource
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.coroutines.experimental.CoroutineContext
 
 object Injector {
 
@@ -23,8 +26,12 @@ object Injector {
 
     fun provideViewModelFactory(
             context: Context,
+            uiContext: CoroutineContext = UI,
+            ioContext: CoroutineContext = CommonPool,
             confirmedPlanetsDataSource: ConfirmedPlanetsDataSource = provideConfirmedPlanetsRepo(context)
     ) = ViewModelFactory(
+            uiContext,
+            ioContext,
             confirmedPlanetsDataSource
     )
 
