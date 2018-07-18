@@ -2,6 +2,8 @@ package com.aidanlaing.exoplanets.data.confirmedplanets.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.aidanlaing.exoplanets.data.Mappable
+import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 
 @Entity(tableName = "confirmed_planet")
@@ -16,20 +18,22 @@ data class ConfirmedPlanetLocal(
         val planetJupiterMass: Double?,
         val planetJupiterRadius: Double?,
         val planetDensity: Double?
-) {
+) : Mappable<ConfirmedPlanet> {
 
-    companion object {
-        fun from(confirmedPlanet: ConfirmedPlanet) = ConfirmedPlanetLocal(
-                confirmedPlanet.planetName,
-                confirmedPlanet.hostStarName,
-                confirmedPlanet.planetLetter,
-                confirmedPlanet.discoveryMethod,
-                confirmedPlanet.numPlanetsInSystem,
-                confirmedPlanet.orbitalPeriodDays,
-                confirmedPlanet.planetJupiterMass,
-                confirmedPlanet.planetJupiterRadius,
-                confirmedPlanet.planetDensity
+    override fun mapToResult(): Result<ConfirmedPlanet> {
+        val confirmedPlanet = ConfirmedPlanet(
+                planetName,
+                hostStarName,
+                planetLetter,
+                discoveryMethod,
+                numPlanetsInSystem,
+                orbitalPeriodDays,
+                planetJupiterMass,
+                planetJupiterRadius,
+                planetDensity
         )
+
+        return Result.Success(confirmedPlanet)
     }
 
 }

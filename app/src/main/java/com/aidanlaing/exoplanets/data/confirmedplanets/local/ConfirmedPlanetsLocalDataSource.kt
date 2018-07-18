@@ -25,8 +25,12 @@ private constructor(
 
     override suspend fun getConfirmedPlanets(): Result<ArrayList<ConfirmedPlanet>> = try {
         confirmedPlanetsDao.get()
-                .mapTo(ArrayList()) { confirmedPlanetLocal ->
-                    ConfirmedPlanet.from(confirmedPlanetLocal)
+                .mapNotNullTo(ArrayList()) { confirmedPlanetLocal ->
+                    val mappingResult = confirmedPlanetLocal.mapToResult()
+                    when (mappingResult) {
+                        is Result.Success -> mappingResult.data
+                        is Result.Failure -> null
+                    }
                 }
                 .let { list -> Result.Success(list) }
 
@@ -35,10 +39,7 @@ private constructor(
     }
 
     override suspend fun getConfirmedPlanet(planetName: String): Result<ConfirmedPlanet> = try {
-        val confirmedPlanetLocal = confirmedPlanetsDao.get(planetName)
-        if (confirmedPlanetLocal == null) Result.Failure(NotFoundException())
-        else Result.Success(ConfirmedPlanet.from(confirmedPlanetLocal))
-
+        confirmedPlanetsDao.get(planetName)?.mapToResult() ?: Result.Failure(NotFoundException())
     } catch (exception: Exception) {
         Result.Failure(exception)
     }
@@ -46,8 +47,12 @@ private constructor(
     override suspend fun saveConfirmedPlanets(
             confirmedPlanets: ArrayList<ConfirmedPlanet>
     ): Result<ArrayList<ConfirmedPlanet>> = try {
-        val localConfirmedPlanets = confirmedPlanets.map { confirmedPlanet ->
-            ConfirmedPlanetLocal.from(confirmedPlanet)
+        val localConfirmedPlanets = confirmedPlanets.mapNotNull { confirmedPlanet ->
+            val mappingResult = confirmedPlanet.mapToResult()
+            when (mappingResult) {
+                is Result.Success -> mappingResult.data
+                is Result.Failure -> null
+            }
         }
         confirmedPlanetsDao.insert(localConfirmedPlanets)
         Result.Success(confirmedPlanets)

@@ -1,5 +1,9 @@
 package com.aidanlaing.exoplanets.data.confirmedplanets.remote
 
+import com.aidanlaing.exoplanets.common.exceptions.MappingException
+import com.aidanlaing.exoplanets.data.Mappable
+import com.aidanlaing.exoplanets.data.Result
+import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.google.gson.annotations.SerializedName
 
 data class ConfirmedPlanetRemote(
@@ -12,4 +16,28 @@ data class ConfirmedPlanetRemote(
         @SerializedName("pl_bmassj") val planetJupiterMass: Double?,
         @SerializedName("pl_radj") val planetJupiterRadius: Double?,
         @SerializedName("pl_dens") val planetDensity: Double?
-)
+) : Mappable<ConfirmedPlanet> {
+
+    override fun mapToResult(): Result<ConfirmedPlanet> {
+        val planetName = planetName
+        val hostStarName = hostStarName
+
+        if (planetName == null || planetName.isBlank() || hostStarName == null) {
+            return Result.Failure(MappingException())
+        }
+
+        val confirmedPlanet = ConfirmedPlanet(
+                planetName,
+                hostStarName,
+                planetLetter,
+                discoveryMethod,
+                numPlanetsInSystem,
+                orbitalPeriodDays,
+                planetJupiterMass,
+                planetJupiterRadius,
+                planetDensity
+        )
+
+        return Result.Success(confirmedPlanet)
+    }
+}

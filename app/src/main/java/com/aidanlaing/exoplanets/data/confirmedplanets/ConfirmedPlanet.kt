@@ -1,7 +1,8 @@
 package com.aidanlaing.exoplanets.data.confirmedplanets
 
+import com.aidanlaing.exoplanets.data.Mappable
+import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetLocal
-import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetRemote
 
 data class ConfirmedPlanet(
         val planetName: String,
@@ -13,39 +14,21 @@ data class ConfirmedPlanet(
         val planetJupiterMass: Double?,
         val planetJupiterRadius: Double?,
         val planetDensity: Double?
-) {
+) : Mappable<ConfirmedPlanetLocal> {
 
-    companion object {
-        fun fromOrNull(confirmedPlanetRemote: ConfirmedPlanetRemote): ConfirmedPlanet? {
-            val planetName = confirmedPlanetRemote.planetName
-            val hostStarName = confirmedPlanetRemote.hostStarName
-
-            if (planetName == null || planetName.isBlank() || hostStarName == null) return null
-
-            return ConfirmedPlanet(
-                    planetName,
-                    hostStarName,
-                    confirmedPlanetRemote.planetLetter,
-                    confirmedPlanetRemote.discoveryMethod,
-                    confirmedPlanetRemote.numPlanetsInSystem,
-                    confirmedPlanetRemote.orbitalPeriodDays,
-                    confirmedPlanetRemote.planetJupiterMass,
-                    confirmedPlanetRemote.planetJupiterRadius,
-                    confirmedPlanetRemote.planetDensity
-            )
-        }
-
-        fun from(confirmedPlanetLocal: ConfirmedPlanetLocal) = ConfirmedPlanet(
-                confirmedPlanetLocal.planetName,
-                confirmedPlanetLocal.hostStarName,
-                confirmedPlanetLocal.planetLetter,
-                confirmedPlanetLocal.discoveryMethod,
-                confirmedPlanetLocal.numPlanetsInSystem,
-                confirmedPlanetLocal.orbitalPeriodDays,
-                confirmedPlanetLocal.planetJupiterMass,
-                confirmedPlanetLocal.planetJupiterRadius,
-                confirmedPlanetLocal.planetDensity
+    override fun mapToResult(): Result<ConfirmedPlanetLocal> {
+        val localConfirmedPlanet = ConfirmedPlanetLocal(
+                planetName,
+                hostStarName,
+                planetLetter,
+                discoveryMethod,
+                numPlanetsInSystem,
+                orbitalPeriodDays,
+                planetJupiterMass,
+                planetJupiterRadius,
+                planetDensity
         )
+        return Result.Success(localConfirmedPlanet)
     }
 
 }

@@ -27,7 +27,11 @@ private constructor(
         confirmedPlanetsApi.get()
                 .await()
                 .mapNotNullTo(ArrayList()) { confirmedPlanetRemote ->
-                    ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)
+                    val mappingResult = confirmedPlanetRemote.mapToResult()
+                    when (mappingResult) {
+                        is Result.Success -> mappingResult.data
+                        is Result.Failure -> null
+                    }
                 }
                 .let { list -> Result.Success(list) }
 
@@ -39,7 +43,11 @@ private constructor(
         confirmedPlanetsApi.get(where = "pl_name like '$planetName'")
                 .await()
                 .mapNotNull { confirmedPlanetRemote ->
-                    ConfirmedPlanet.fromOrNull(confirmedPlanetRemote)
+                    val mappingResult = confirmedPlanetRemote.mapToResult()
+                    when (mappingResult) {
+                        is Result.Success -> mappingResult.data
+                        is Result.Failure -> null
+                    }
                 }
                 .first()
                 .let { confirmedPlanet -> Result.Success(confirmedPlanet) }
