@@ -20,46 +20,68 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progressBar.visibility = View.GONE
-        noConnectionView.visibility = View.GONE
-        errorView.visibility = View.GONE
-
-        val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter({ confirmedPlanet ->
-            goToConfirmedPlanetDetail(confirmedPlanet.planetName)
-        })
-        confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
-        confirmedPlanetsRv.layoutManager = LinearLayoutManager(this)
-
         val viewModel = ViewModelProviders
                 .of(this, Injector.provideViewModelFactory(this))
                 .get(MainViewModel::class.java)
 
+        setUpConfirmedPlanets(viewModel)
+        setUpLoading(viewModel)
+        setUpNoConnection(viewModel)
+        setUpGeneralError(viewModel)
+    }
+
+    private fun setUpConfirmedPlanets(viewModel: MainViewModel) {
+        val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter({ confirmedPlanet ->
+            goToConfirmedPlanetDetail(confirmedPlanet.planetName)
+        })
+
+        confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
+        confirmedPlanetsRv.layoutManager = LinearLayoutManager(this)
+
         viewModel.getConfirmedPlanets().observe(this, Observer { confirmedPlanets ->
             confirmedPlanetsAdapter.replaceItems(confirmedPlanets)
         })
+    }
 
+    private fun setUpLoading(viewModel: MainViewModel) {
         viewModel.showLoading().observe(this, Observer { show ->
             if (show) progressBar.visibility = View.VISIBLE
             else progressBar.visibility = View.GONE
         })
+    }
 
+    private fun setUpNoConnection(viewModel: MainViewModel) {
         viewModel.showNoConnection().observe(this, Observer { show ->
-            if (show) noConnectionView.visibility = View.VISIBLE
-            else noConnectionView.visibility = View.GONE
+            val titleText = getString(R.string.no_internet_connection)
+            val infoText = getString(R.string.no_internet_connection_info)
+            setError(viewModel, show, titleText, infoText)
         })
+    }
 
+    private fun setUpGeneralError(viewModel: MainViewModel) {
         viewModel.showGeneralError().observe(this, Observer { show ->
-            if (show) {
-                errorView.visibility = View.VISIBLE
-                errorView.setTitleText(getString(R.string.error))
-                errorView.setInfoText(getString(R.string.error_info))
-                errorView.setRetryListener {
-                    viewModel.retryClicked()
-                }
-            } else {
-                errorView.visibility = View.GONE
-            }
+            val titleText = getString(R.string.error)
+            val infoText = getString(R.string.error_info)
+            setError(viewModel, show, titleText, infoText)
         })
+    }
+
+    private fun setError(
+            viewModel: MainViewModel,
+            show: Boolean,
+            titleText: String,
+            infoText: String
+    ) {
+        if (show) {
+            errorView.visibility = View.VISIBLE
+            errorView.setTitleText(titleText)
+            errorView.setInfoText(infoText)
+            errorView.setRetryListener {
+                viewModel.retryClicked()
+            }
+        } else {
+            errorView.visibility = View.GONE
+        }
     }
 
     private fun goToConfirmedPlanetDetail(planetName: String) {

@@ -22,6 +22,12 @@ class MainViewModel(
     private val noConnection = MutableLiveData<Boolean>()
     private val generalError = MutableLiveData<Boolean>()
 
+    init {
+        loading.value = false
+        noConnection.value = false
+        generalError.value = false
+    }
+
     fun getConfirmedPlanets(): LiveData<ArrayList<ConfirmedPlanet>> {
         if (confirmedPlanets.value == null) {
             loadConfirmedPlanets()

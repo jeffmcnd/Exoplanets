@@ -7,24 +7,22 @@ import android.widget.LinearLayout
 import com.aidanlaing.exoplanets.R
 import kotlinx.android.synthetic.main.view_error.view.*
 
-class ErrorView: LinearLayout {
+class ErrorView : LinearLayout {
 
-    constructor(context: Context): super(context)
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int): super(context, attrs, defStyleAttr)
-
-    private var view: View? = null
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         orientation = LinearLayout.VERTICAL
-        view = View.inflate(context, R.layout.view_error, this)
+        View.inflate(context, R.layout.view_error, this)
     }
 
-    fun setTitleText(text: String) = with(view) {
+    fun setTitleText(text: String) {
         titleTv.text = text
     }
 
-    fun setInfoText(text: String) = with(view) {
+    fun setInfoText(text: String) {
         infoTv.text = text
     }
 

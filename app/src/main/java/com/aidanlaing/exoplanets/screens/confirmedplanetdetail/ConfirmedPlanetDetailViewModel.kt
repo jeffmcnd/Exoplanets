@@ -22,6 +22,12 @@ class ConfirmedPlanetDetailViewModel(
     private val noConnection = MutableLiveData<Boolean>()
     private val generalError = MutableLiveData<Boolean>()
 
+    init {
+        loading.value = false
+        noConnection.value = false
+        generalError.value = false
+    }
+
     fun getConfirmedPlanet(planetName: String): LiveData<ConfirmedPlanet> {
         if (confirmedPlanet.value == null) {
             loadConfirmedPlanet(planetName)

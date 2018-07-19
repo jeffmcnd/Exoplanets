@@ -17,10 +17,6 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmed_planet_detail)
 
-        progressBar.visibility = View.GONE
-        noConnectionView.visibility = View.GONE
-        errorView.visibility = View.GONE
-
         val planetName = intent.getStringExtra(Constants.PLANET_NAME)
         if (planetName == null) {
             showToast(getString(R.string.error_unexpected))
@@ -32,35 +28,61 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
                 .of(this, Injector.provideViewModelFactory(this))
                 .get(ConfirmedPlanetDetailViewModel::class.java)
 
-        viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
-            planetNameTv.text = confirmedPlanet.planetName
-        })
-
-        viewModel.showLoading().observe(this, Observer { show ->
-            if (show) progressBar.visibility = View.VISIBLE
-            else progressBar.visibility = View.GONE
-        })
-
-        viewModel.showNoConnection().observe(this, Observer { show ->
-            if (show) noConnectionView.visibility = View.VISIBLE
-            else noConnectionView.visibility = View.GONE
-        })
-
-        viewModel.showGeneralError().observe(this, Observer { show ->
-            if (show) {
-                errorView.visibility = View.VISIBLE
-                errorView.setTitleText(getString(R.string.error))
-                errorView.setInfoText(getString(R.string.error_info))
-                errorView.setRetryListener {
-                    viewModel.retryClicked(planetName)
-                }
-            } else {
-                errorView.visibility = View.GONE
-            }
-        })
+        setUpConfirmedPlanet(viewModel, planetName)
+        setUpLoading(viewModel)
+        setUpNoConnection(viewModel, planetName)
+        setUpGeneralError(viewModel, planetName)
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setUpConfirmedPlanet(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
+        viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
+            planetNameTv.text = confirmedPlanet.planetName
+        })
+    }
+
+    private fun setUpLoading(viewModel: ConfirmedPlanetDetailViewModel) {
+        viewModel.showLoading().observe(this, Observer { show ->
+            if (show) progressBar.visibility = View.VISIBLE
+            else progressBar.visibility = View.GONE
+        })
+    }
+
+    private fun setUpNoConnection(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
+        viewModel.showNoConnection().observe(this, Observer { show ->
+            val titleText = getString(R.string.no_internet_connection)
+            val infoText = getString(R.string.no_internet_connection_info)
+            setError(viewModel, planetName, show, titleText, infoText)
+        })
+    }
+
+    private fun setUpGeneralError(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
+        viewModel.showGeneralError().observe(this, Observer { show ->
+            val titleText = getString(R.string.error)
+            val infoText = getString(R.string.error_info)
+            setError(viewModel, planetName, show, titleText, infoText)
+        })
+    }
+
+    private fun setError(
+            viewModel: ConfirmedPlanetDetailViewModel,
+            planetName: String,
+            show: Boolean,
+            titleText: String,
+            infoText: String
+    ) {
+        if (show) {
+            errorView.visibility = View.VISIBLE
+            errorView.setTitleText(titleText)
+            errorView.setInfoText(infoText)
+            errorView.setRetryListener {
+                viewModel.retryClicked(planetName)
+            }
+        } else {
+            errorView.visibility = View.GONE
+        }
     }
 }
