@@ -1,7 +1,7 @@
 package com.aidanlaing.exoplanets.common
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
 import com.aidanlaing.exoplanets.screens.confirmedplanetdetail.ConfirmedPlanetDetailViewModel
 import com.aidanlaing.exoplanets.screens.main.MainViewModel

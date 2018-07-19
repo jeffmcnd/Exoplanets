@@ -1,12 +1,12 @@
 package com.aidanlaing.exoplanets.screens.main
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
@@ -31,38 +31,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpConfirmedPlanets(viewModel: MainViewModel) {
+
         val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter({ confirmedPlanet ->
             goToConfirmedPlanetDetail(confirmedPlanet.planetName)
         })
 
+        val layoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+        )
+
         confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
-        confirmedPlanetsRv.layoutManager = LinearLayoutManager(this)
+        confirmedPlanetsRv.layoutManager = layoutManager
 
         viewModel.getConfirmedPlanets().observe(this, Observer { confirmedPlanets ->
-            confirmedPlanetsAdapter.replaceItems(confirmedPlanets)
+            confirmedPlanets?.let { confirmedPlanetsAdapter.replaceItems(confirmedPlanets) }
         })
     }
 
     private fun setUpLoading(viewModel: MainViewModel) {
         viewModel.showLoading().observe(this, Observer { show ->
-            if (show) progressBar.visibility = View.VISIBLE
-            else progressBar.visibility = View.GONE
+            show?.let {
+                if (show) progressBar.visibility = View.VISIBLE
+                else progressBar.visibility = View.GONE
+            }
         })
     }
 
     private fun setUpNoConnection(viewModel: MainViewModel) {
         viewModel.showNoConnection().observe(this, Observer { show ->
-            val titleText = getString(R.string.no_internet_connection)
-            val infoText = getString(R.string.no_internet_connection_info)
-            setError(viewModel, show, titleText, infoText)
+            show?.let {
+                val titleText = getString(R.string.no_internet_connection)
+                val infoText = getString(R.string.no_internet_connection_info)
+                setError(viewModel, show, titleText, infoText)
+            }
         })
     }
 
     private fun setUpGeneralError(viewModel: MainViewModel) {
         viewModel.showGeneralError().observe(this, Observer { show ->
-            val titleText = getString(R.string.error)
-            val infoText = getString(R.string.error_info)
-            setError(viewModel, show, titleText, infoText)
+            show?.let {
+                val titleText = getString(R.string.error)
+                val infoText = getString(R.string.error_info)
+                setError(viewModel, show, titleText, infoText)
+            }
         })
     }
 

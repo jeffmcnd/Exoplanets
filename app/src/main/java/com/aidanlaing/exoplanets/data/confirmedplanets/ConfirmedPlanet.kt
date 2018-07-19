@@ -30,5 +30,4 @@ data class ConfirmedPlanet(
         )
         return Result.Success(localConfirmedPlanet)
     }
-
 }

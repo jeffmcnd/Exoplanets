@@ -1,13 +1,13 @@
 package com.aidanlaing.exoplanets.common.adapters.confirmedplanets
 
+import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 
 class ConfirmedPlanetsAdapter(
         private val confirmedPlanetClickListener: (confirmedPlanet: ConfirmedPlanet) -> Unit,
         private var confirmedPlanets: ArrayList<ConfirmedPlanet> = ArrayList()
-): RecyclerView.Adapter<ConfirmedPlanetViewHolder>() {
+) : RecyclerView.Adapter<ConfirmedPlanetViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConfirmedPlanetViewHolder =
             ConfirmedPlanetViewHolder.inflate(parent)

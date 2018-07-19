@@ -1,8 +1,8 @@
 package com.aidanlaing.exoplanets.screens.confirmedplanetdetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource

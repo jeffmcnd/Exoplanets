@@ -1,7 +1,7 @@
 package com.aidanlaing.exoplanets.data.confirmedplanets.local
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
