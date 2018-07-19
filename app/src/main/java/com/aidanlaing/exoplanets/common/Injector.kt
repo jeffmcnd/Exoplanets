@@ -52,7 +52,10 @@ object Injector {
             .build()
             .also { okHttpClient -> cachedOkHttpClient = okHttpClient }
 
-    fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.getInstance(context)
+    fun provideAppDatabase(
+            context: Context,
+            name: String = "app.db"
+    ): AppDatabase = AppDatabase.getInstance(context, name)
 
     fun provideConfirmedPlanetsRepo(
             context: Context,

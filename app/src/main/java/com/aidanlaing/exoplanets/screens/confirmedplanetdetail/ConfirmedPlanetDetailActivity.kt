@@ -9,6 +9,10 @@ import android.widget.Toast
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
+import com.aidanlaing.exoplanets.common.glide.ColorTransformation
+import com.aidanlaing.exoplanets.data.confirmedplanets.PlanetImage
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_confirmed_planet_detail.*
 
 class ConfirmedPlanetDetailActivity : AppCompatActivity() {
@@ -41,6 +45,19 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
     private fun setUpConfirmedPlanet(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
         viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
             confirmedPlanet?.let {
+
+                val planetImage = confirmedPlanet.getPlanetImage()
+                val resId = when (planetImage) {
+                    is PlanetImage.Stripe -> R.drawable.ic_planet_stripe
+                    is PlanetImage.Crevice -> R.drawable.ic_planet_crevice
+                    is PlanetImage.WaterLand -> R.drawable.ic_planet_water_land
+                }
+
+                Glide.with(this)
+                        .load(resId)
+                        .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
+                        .into(planetImageIv)
+
                 planetNameTv.text = confirmedPlanet.planetName
             }
         })

@@ -7,10 +7,6 @@ import android.content.Context
 import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetLocal
 import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
 
-/**
- * Created by Aidan Laing on 2017-12-09.
- *
- */
 @Database(entities = [ConfirmedPlanetLocal::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -21,15 +17,15 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: buildDatabase(context)
+        fun getInstance(context: Context, name: String) = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: buildDatabase(context, name)
                     .also { INSTANCE = it }
         }
 
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(
+        private fun buildDatabase(context: Context, name: String) = Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
-                "app.db"
+                name
         ).fallbackToDestructiveMigration()
                 .build()
     }
