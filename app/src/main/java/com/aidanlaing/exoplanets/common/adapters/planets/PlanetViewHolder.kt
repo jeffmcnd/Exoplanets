@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
+import com.aidanlaing.exoplanets.common.glide.GlideApp
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetImage
 import com.bumptech.glide.Glide
@@ -26,7 +27,7 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             is PlanetImage.WaterLand -> R.drawable.ic_planet_water_land
         }
 
-        Glide.with(this)
+        GlideApp.with(this)
                 .load(resId)
                 .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
                 .into(planetImageIv)

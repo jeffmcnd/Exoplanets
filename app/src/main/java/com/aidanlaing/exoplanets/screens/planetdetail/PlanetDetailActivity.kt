@@ -10,6 +10,7 @@ import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
+import com.aidanlaing.exoplanets.common.glide.GlideApp
 import com.aidanlaing.exoplanets.data.planets.PlanetImage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -52,7 +53,7 @@ class PlanetDetailActivity : AppCompatActivity() {
                     is PlanetImage.WaterLand -> R.drawable.ic_planet_water_land
                 }
 
-                Glide.with(this)
+                GlideApp.with(this)
                         .load(resId)
                         .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
                         .into(planetImageIv)
