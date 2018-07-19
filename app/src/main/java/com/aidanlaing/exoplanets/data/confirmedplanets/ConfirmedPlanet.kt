@@ -30,4 +30,6 @@ data class ConfirmedPlanet(
         )
         return Result.Success(localConfirmedPlanet)
     }
+
+    fun getPlanetImage() = PlanetImage.from(this)
 }
