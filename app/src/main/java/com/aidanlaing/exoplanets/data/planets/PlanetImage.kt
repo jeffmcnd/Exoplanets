@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.planets
 
 import android.graphics.Color
 import java.util.*
@@ -10,8 +10,8 @@ sealed class PlanetImage(val color: Int) {
     class WaterLand(color: Int) : PlanetImage(color)
 
     companion object {
-        fun from(confirmedPlanet: ConfirmedPlanet): PlanetImage {
-            val seed = confirmedPlanet.planetName.hashCode().toLong()
+        fun from(planet: Planet): PlanetImage {
+            val seed = planet.planetName.hashCode().toLong()
             val random = Random(seed)
 
             val h = 0f + random.nextInt(360)

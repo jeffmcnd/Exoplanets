@@ -1,10 +1,10 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets.remote
+package com.aidanlaing.exoplanets.data.planets.remote
 
 import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ConfirmedPlanetsApi {
+interface PlanetsApi {
 
     @GET("/cgi-bin/nstedAPI/nph-nstedAPI")
     fun get(
@@ -13,6 +13,6 @@ interface ConfirmedPlanetsApi {
             @Query("order") order: String = "dec",
             @Query("format") format: String = "json",
             @Query("where") where: String? = null
-    ): Deferred<ArrayList<ConfirmedPlanetRemote>>
+    ): Deferred<ArrayList<PlanetRemote>>
 
 }

@@ -1,12 +1,12 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets.remote
+package com.aidanlaing.exoplanets.data.planets.remote
 
 import com.aidanlaing.exoplanets.common.exceptions.MappingException
 import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
+import com.aidanlaing.exoplanets.data.planets.Planet
 import com.google.gson.annotations.SerializedName
 
-data class ConfirmedPlanetRemote(
+data class PlanetRemote(
         @SerializedName("pl_name") val planetName: String?,
         @SerializedName("pl_hostname") val hostStarName: String?,
         @SerializedName("pl_letter") val planetLetter: String?,
@@ -16,9 +16,9 @@ data class ConfirmedPlanetRemote(
         @SerializedName("pl_bmassj") val planetJupiterMass: Double?,
         @SerializedName("pl_radj") val planetJupiterRadius: Double?,
         @SerializedName("pl_dens") val planetDensity: Double?
-) : Mappable<ConfirmedPlanet> {
+) : Mappable<Planet> {
 
-    override fun mapToResult(): Result<ConfirmedPlanet> {
+    override fun mapToResult(): Result<Planet> {
         val planetName = planetName
         val hostStarName = hostStarName
 
@@ -26,7 +26,7 @@ data class ConfirmedPlanetRemote(
             return Result.Failure(MappingException())
         }
 
-        val confirmedPlanet = ConfirmedPlanet(
+        val planet = Planet(
                 planetName,
                 hostStarName,
                 planetLetter,
@@ -38,6 +38,6 @@ data class ConfirmedPlanetRemote(
                 planetDensity
         )
 
-        return Result.Success(confirmedPlanet)
+        return Result.Success(planet)
     }
 }

@@ -2,26 +2,26 @@ package com.aidanlaing.exoplanets.common
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import com.aidanlaing.exoplanets.screens.confirmedplanetdetail.ConfirmedPlanetDetailViewModel
-import com.aidanlaing.exoplanets.screens.main.MainViewModel
+import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
+import com.aidanlaing.exoplanets.screens.planets.PlanetsViewModel
+import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailViewModel
 import kotlin.coroutines.experimental.CoroutineContext
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(
         private val uiContext: CoroutineContext,
         private val ioContext: CoroutineContext,
-        private val confirmedPlanetsDataSource: ConfirmedPlanetsDataSource
+        private val planetsDataSource: PlanetsDataSource
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val viewModel: ViewModel? = when {
 
-            modelClass.isAssignableFrom(MainViewModel::class.java) ->
-                MainViewModel(uiContext, ioContext, confirmedPlanetsDataSource)
+            modelClass.isAssignableFrom(PlanetsViewModel::class.java) ->
+                PlanetsViewModel(uiContext, ioContext, planetsDataSource)
 
-            modelClass.isAssignableFrom(ConfirmedPlanetDetailViewModel::class.java) ->
-                ConfirmedPlanetDetailViewModel(uiContext, ioContext, confirmedPlanetsDataSource)
+            modelClass.isAssignableFrom(PlanetDetailViewModel::class.java) ->
+                PlanetDetailViewModel(uiContext, ioContext, planetsDataSource)
 
             else -> null
 

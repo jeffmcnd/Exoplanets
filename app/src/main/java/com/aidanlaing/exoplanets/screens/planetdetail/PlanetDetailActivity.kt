@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.screens.confirmedplanetdetail
+package com.aidanlaing.exoplanets.screens.planetdetail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -10,16 +10,16 @@ import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
-import com.aidanlaing.exoplanets.data.confirmedplanets.PlanetImage
+import com.aidanlaing.exoplanets.data.planets.PlanetImage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.activity_confirmed_planet_detail.*
+import kotlinx.android.synthetic.main.activity_planet_detail.*
 
-class ConfirmedPlanetDetailActivity : AppCompatActivity() {
+class PlanetDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_confirmed_planet_detail)
+        setContentView(R.layout.activity_planet_detail)
 
         val planetName = intent.getStringExtra(Constants.PLANET_NAME)
         if (planetName == null) {
@@ -30,9 +30,9 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProviders
                 .of(this, Injector.provideViewModelFactory(this))
-                .get(ConfirmedPlanetDetailViewModel::class.java)
+                .get(PlanetDetailViewModel::class.java)
 
-        setUpConfirmedPlanet(viewModel, planetName)
+        setUpPlanet(viewModel, planetName)
         setUpLoading(viewModel)
         setUpNoConnection(viewModel, planetName)
         setUpGeneralError(viewModel, planetName)
@@ -42,11 +42,10 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setUpConfirmedPlanet(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
-        viewModel.getConfirmedPlanet(planetName).observe(this, Observer { confirmedPlanet ->
-            confirmedPlanet?.let {
-
-                val planetImage = confirmedPlanet.getPlanetImage()
+    private fun setUpPlanet(viewModel: PlanetDetailViewModel, planetName: String) {
+        viewModel.getPlanet(planetName).observe(this, Observer { planet ->
+            planet?.let {
+                val planetImage = planet.getPlanetImage()
                 val resId = when (planetImage) {
                     is PlanetImage.Stripe -> R.drawable.ic_planet_stripe
                     is PlanetImage.Crevice -> R.drawable.ic_planet_crevice
@@ -58,12 +57,12 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
                         .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
                         .into(planetImageIv)
 
-                planetNameTv.text = confirmedPlanet.planetName
+                planetNameTv.text = planet.planetName
             }
         })
     }
 
-    private fun setUpLoading(viewModel: ConfirmedPlanetDetailViewModel) {
+    private fun setUpLoading(viewModel: PlanetDetailViewModel) {
         viewModel.showLoading().observe(this, Observer { show ->
             show?.let {
                 if (show) progressBar.visibility = View.VISIBLE
@@ -72,7 +71,7 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpNoConnection(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
+    private fun setUpNoConnection(viewModel: PlanetDetailViewModel, planetName: String) {
         viewModel.showNoConnection().observe(this, Observer { show ->
             show?.let {
                 val titleText = getString(R.string.no_internet_connection)
@@ -82,7 +81,7 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpGeneralError(viewModel: ConfirmedPlanetDetailViewModel, planetName: String) {
+    private fun setUpGeneralError(viewModel: PlanetDetailViewModel, planetName: String) {
         viewModel.showGeneralError().observe(this, Observer { show ->
             show?.let {
                 val titleText = getString(R.string.error)
@@ -93,7 +92,7 @@ class ConfirmedPlanetDetailActivity : AppCompatActivity() {
     }
 
     private fun setError(
-            viewModel: ConfirmedPlanetDetailViewModel,
+            viewModel: PlanetDetailViewModel,
             planetName: String,
             show: Boolean,
             titleText: String,

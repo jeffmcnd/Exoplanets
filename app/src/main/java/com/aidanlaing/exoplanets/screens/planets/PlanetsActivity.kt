@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.screens.main
+package com.aidanlaing.exoplanets.screens.planets
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -6,48 +6,47 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
-import com.aidanlaing.exoplanets.common.adapters.confirmedplanets.ConfirmedPlanetsAdapter
-import com.aidanlaing.exoplanets.screens.confirmedplanetdetail.ConfirmedPlanetDetailActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
+import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailActivity
+import kotlinx.android.synthetic.main.activity_planets.*
 
-class MainActivity : AppCompatActivity() {
+class PlanetsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_planets)
 
         val viewModel = ViewModelProviders
                 .of(this, Injector.provideViewModelFactory(this))
-                .get(MainViewModel::class.java)
+                .get(PlanetsViewModel::class.java)
 
-        setUpConfirmedPlanets(viewModel)
+        setUpPlanets(viewModel)
         setUpLoading(viewModel)
         setUpNoConnection(viewModel)
         setUpGeneralError(viewModel)
     }
 
-    private fun setUpConfirmedPlanets(viewModel: MainViewModel) {
+    private fun setUpPlanets(viewModel: PlanetsViewModel) {
 
-        val confirmedPlanetsAdapter = ConfirmedPlanetsAdapter({ confirmedPlanet ->
-            goToConfirmedPlanetDetail(confirmedPlanet.planetName)
+        val planetsAdapter = PlanetsAdapter({ planet ->
+            goToPlanetDetail(planet.planetName)
         })
 
         val layoutManager = LinearLayoutManager(this)
 
-        confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
-        confirmedPlanetsRv.layoutManager = layoutManager
+        planetsRv.adapter = planetsAdapter
+        planetsRv.layoutManager = layoutManager
 
-        viewModel.getConfirmedPlanets().observe(this, Observer { confirmedPlanets ->
-            confirmedPlanets?.let { confirmedPlanetsAdapter.replaceItems(confirmedPlanets) }
+        viewModel.getPlanets().observe(this, Observer { planets ->
+            planets?.let { planetsAdapter.replaceItems(planets) }
         })
     }
 
-    private fun setUpLoading(viewModel: MainViewModel) {
+    private fun setUpLoading(viewModel: PlanetsViewModel) {
         viewModel.showLoading().observe(this, Observer { show ->
             show?.let {
                 if (show) progressBar.visibility = View.VISIBLE
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpNoConnection(viewModel: MainViewModel) {
+    private fun setUpNoConnection(viewModel: PlanetsViewModel) {
         viewModel.showNoConnection().observe(this, Observer { show ->
             show?.let {
                 val titleText = getString(R.string.no_internet_connection)
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpGeneralError(viewModel: MainViewModel) {
+    private fun setUpGeneralError(viewModel: PlanetsViewModel) {
         viewModel.showGeneralError().observe(this, Observer { show ->
             show?.let {
                 val titleText = getString(R.string.error)
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setError(
-            viewModel: MainViewModel,
+            viewModel: PlanetsViewModel,
             show: Boolean,
             titleText: String,
             infoText: String
@@ -94,8 +93,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToConfirmedPlanetDetail(planetName: String) {
-        Intent(this, ConfirmedPlanetDetailActivity::class.java)
+    private fun goToPlanetDetail(planetName: String) {
+        Intent(this, PlanetDetailActivity::class.java)
                 .putExtra(Constants.PLANET_NAME, planetName)
                 .run { startActivity(this) }
     }

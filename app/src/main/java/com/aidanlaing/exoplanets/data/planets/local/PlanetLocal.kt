@@ -1,13 +1,13 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets.local
+package com.aidanlaing.exoplanets.data.planets.local
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanet
+import com.aidanlaing.exoplanets.data.planets.Planet
 
-@Entity(tableName = "confirmed_planet")
-data class ConfirmedPlanetLocal(
+@Entity(tableName = "planet")
+data class PlanetLocal(
         @PrimaryKey
         val planetName: String,
         val hostStarName: String?,
@@ -18,10 +18,10 @@ data class ConfirmedPlanetLocal(
         val planetJupiterMass: Double?,
         val planetJupiterRadius: Double?,
         val planetDensity: Double?
-) : Mappable<ConfirmedPlanet> {
+) : Mappable<Planet> {
 
-    override fun mapToResult(): Result<ConfirmedPlanet> {
-        val confirmedPlanet = ConfirmedPlanet(
+    override fun mapToResult(): Result<Planet> {
+        val planet = Planet(
                 planetName,
                 hostStarName,
                 planetLetter,
@@ -33,7 +33,7 @@ data class ConfirmedPlanetLocal(
                 planetDensity
         )
 
-        return Result.Success(confirmedPlanet)
+        return Result.Success(planet)
     }
 
 }

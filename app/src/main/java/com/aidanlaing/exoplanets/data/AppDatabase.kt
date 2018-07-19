@@ -4,13 +4,13 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetLocal
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
+import com.aidanlaing.exoplanets.data.planets.local.PlanetLocal
+import com.aidanlaing.exoplanets.data.planets.local.PlanetsDao
 
-@Database(entities = [ConfirmedPlanetLocal::class], version = 1)
+@Database(entities = [PlanetLocal::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun confirmedPlanetsDao(): ConfirmedPlanetsDao
+    abstract fun planetsDao(): PlanetsDao
 
     companion object {
 

@@ -1,10 +1,10 @@
-package com.aidanlaing.exoplanets.data.confirmedplanets
+package com.aidanlaing.exoplanets.data.planets
 
 import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetLocal
+import com.aidanlaing.exoplanets.data.planets.local.PlanetLocal
 
-data class ConfirmedPlanet(
+data class Planet(
         val planetName: String,
         val hostStarName: String?,
         val planetLetter: String?,
@@ -14,10 +14,10 @@ data class ConfirmedPlanet(
         val planetJupiterMass: Double?,
         val planetJupiterRadius: Double?,
         val planetDensity: Double?
-) : Mappable<ConfirmedPlanetLocal> {
+) : Mappable<PlanetLocal> {
 
-    override fun mapToResult(): Result<ConfirmedPlanetLocal> {
-        val localConfirmedPlanet = ConfirmedPlanetLocal(
+    override fun mapToResult(): Result<PlanetLocal> {
+        val localPlanet = PlanetLocal(
                 planetName,
                 hostStarName,
                 planetLetter,
@@ -28,7 +28,7 @@ data class ConfirmedPlanet(
                 planetJupiterRadius,
                 planetDensity
         )
-        return Result.Success(localConfirmedPlanet)
+        return Result.Success(localPlanet)
     }
 
     fun getPlanetImage() = PlanetImage.from(this)
