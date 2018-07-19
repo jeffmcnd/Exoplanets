@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import com.aidanlaing.exoplanets.R
@@ -36,10 +37,7 @@ class MainActivity : AppCompatActivity() {
             goToConfirmedPlanetDetail(confirmedPlanet.planetName)
         })
 
-        val layoutManager = StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL
-        )
+        val layoutManager = LinearLayoutManager(this)
 
         confirmedPlanetsRv.adapter = confirmedPlanetsAdapter
         confirmedPlanetsRv.layoutManager = layoutManager

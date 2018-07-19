@@ -6,15 +6,18 @@
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingTop="32dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="32dp">
 
     <ImageView
         android:id="@+id/planetImageIv"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@null"
-        tools:src="@drawable/ic_planet_water_land" />
+        tools:src="@drawable/ic_planet_stripe" />
 
     <TextView
         android:id="@+id/planetNameTv"
@@ -22,16 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:theme="@style/HeaderTwoTextStyle"
+        android:theme="@style/HeaderOneTextStyle"
         tools:text="HD 142022 A b" />
-
-    <TextView
-        android:id="@+id/hostStarNameTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:theme="@style/NormalTextStyle"
-        tools:text="HD 142022 A" />
 
 </LinearLayout>

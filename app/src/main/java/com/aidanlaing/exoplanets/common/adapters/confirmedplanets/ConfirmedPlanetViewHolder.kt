@@ -1,6 +1,7 @@
 package com.aidanlaing.exoplanets.common.adapters.confirmedplanets
 
 import android.graphics.Color
+import android.support.v4.graphics.ColorUtils
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -24,12 +25,10 @@ class ConfirmedPlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
         val random = Random(seed)
         val color = generateRandomPastelColor(random)
 
-        val resId = when (random.nextInt(5)) {
+        val resId = when (random.nextInt(3)) {
             0 -> R.drawable.ic_planet_water_land
             1 -> R.drawable.ic_planet_crevice
             2 -> R.drawable.ic_planet_stripe
-            3 -> R.drawable.ic_planet_holes
-            4 -> R.drawable.ic_planet_ring
             else -> R.drawable.ic_planet_water_land
         }
 
@@ -39,7 +38,6 @@ class ConfirmedPlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
                 .into(planetImageIv)
 
         planetNameTv.text = confirmedPlanet.planetName
-        hostStarNameTv.text = confirmedPlanet.hostStarName
 
         layout.setOnClickListener {
             confirmedPlanetClickListener(confirmedPlanet)
@@ -47,11 +45,10 @@ class ConfirmedPlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     }
 
     fun generateRandomPastelColor(random: Random): Int {
-        val red = (random.nextInt(256) + 0) / 2
-        val green = (random.nextInt(256) + 191) / 2
-        val blue = (random.nextInt(256) + 255) / 2
-
-        return Color.argb(150, red, green, blue)
+        val h = 0f + random.nextInt(360)
+        val s = 42f + random.nextInt(98)
+        val v = 40f + random.nextInt(90)
+        return Color.HSVToColor(100, floatArrayOf(h, s, v))
     }
 
     companion object {
