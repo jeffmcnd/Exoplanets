@@ -9,7 +9,6 @@ import com.aidanlaing.exoplanets.common.glide.ColorTransformation
 import com.aidanlaing.exoplanets.common.glide.GlideApp
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetImage
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_planet.view.*
 
@@ -22,9 +21,11 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val planetImage = planet.getPlanetImage()
         val resId = when (planetImage) {
-            is PlanetImage.Stripe -> R.drawable.ic_planet_stripe
-            is PlanetImage.Crevice -> R.drawable.ic_planet_crevice
-            is PlanetImage.WaterLand -> R.drawable.ic_planet_water_land
+            is PlanetImage.GasOne -> R.drawable.ic_planet_gas_1
+            is PlanetImage.GasTwo -> R.drawable.ic_planet_gas_2
+            is PlanetImage.GasThree -> R.drawable.ic_planet_gas_3
+            is PlanetImage.RockyOne -> R.drawable.ic_planet_rocky_1
+            is PlanetImage.WaterLandOne -> R.drawable.ic_planet_water_land_1
         }
 
         GlideApp.with(this)

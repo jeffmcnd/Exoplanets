@@ -5,9 +5,13 @@ import java.util.*
 
 sealed class PlanetImage(val color: Int) {
 
-    class Stripe(color: Int) : PlanetImage(color)
-    class Crevice(color: Int) : PlanetImage(color)
-    class WaterLand(color: Int) : PlanetImage(color)
+    class GasOne(color: Int) : PlanetImage(color)
+    class GasTwo(color: Int) : PlanetImage(color)
+    class GasThree(color: Int) : PlanetImage(color)
+
+    class RockyOne(color: Int) : PlanetImage(color)
+
+    class WaterLandOne(color: Int) : PlanetImage(color)
 
     companion object {
         fun from(planet: Planet): PlanetImage {
@@ -19,11 +23,13 @@ sealed class PlanetImage(val color: Int) {
             val v = 40f + random.nextInt(90)
             val color = Color.HSVToColor(100, floatArrayOf(h, s, v))
 
-            return when (random.nextInt(3)) {
-                0 -> Stripe(color)
-                1 -> Crevice(color)
-                2 -> WaterLand(color)
-                else -> WaterLand(color)
+            return when (random.nextInt(5)) {
+                0 -> GasOne(color)
+                1 -> GasTwo(color)
+                2 -> GasThree(color)
+                3 -> RockyOne(color)
+                4 -> WaterLandOne(color)
+                else -> GasOne(color)
             }
         }
     }
