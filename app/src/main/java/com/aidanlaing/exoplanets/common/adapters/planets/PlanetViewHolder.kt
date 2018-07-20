@@ -21,15 +21,12 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val planetImage = planet.getPlanetImage()
         val resId = when (planetImage) {
-            is PlanetImage.GasOne -> R.drawable.ic_planet_gas_1
-            is PlanetImage.GasTwo -> R.drawable.ic_planet_gas_2
-            is PlanetImage.GasThree -> R.drawable.ic_planet_gas_3
-            is PlanetImage.RockyOne -> R.drawable.ic_planet_rocky_1
-            is PlanetImage.RockyTwo -> R.drawable.ic_planet_rocky_2
-            is PlanetImage.RockyThree -> R.drawable.ic_planet_rocky_3
-            is PlanetImage.WaterLandOne -> R.drawable.ic_planet_water_land_1
-            is PlanetImage.WaterLandTwo -> R.drawable.ic_planet_water_land_2
-            is PlanetImage.WaterLandThree -> R.drawable.ic_planet_water_land_3
+            is PlanetImage.PlanetOne -> R.drawable.ic_planet_1
+            is PlanetImage.PlanetTwo -> R.drawable.ic_planet_2
+            is PlanetImage.PlanetThree -> R.drawable.ic_planet_3
+            is PlanetImage.PlanetFour -> R.drawable.ic_planet_4
+            is PlanetImage.PlanetFive -> R.drawable.ic_planet_5
+            is PlanetImage.PlanetSix -> R.drawable.ic_planet_6
         }
 
         GlideApp.with(this)

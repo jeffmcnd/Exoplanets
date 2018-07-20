@@ -5,17 +5,12 @@ import java.util.*
 
 sealed class PlanetImage(val color: Int) {
 
-    class GasOne(color: Int) : PlanetImage(color)
-    class GasTwo(color: Int) : PlanetImage(color)
-    class GasThree(color: Int) : PlanetImage(color)
-
-    class RockyOne(color: Int) : PlanetImage(color)
-    class RockyTwo(color: Int) : PlanetImage(color)
-    class RockyThree(color: Int) : PlanetImage(color)
-
-    class WaterLandOne(color: Int) : PlanetImage(color)
-    class WaterLandTwo(color: Int) : PlanetImage(color)
-    class WaterLandThree(color: Int) : PlanetImage(color)
+    class PlanetOne(color: Int) : PlanetImage(color)
+    class PlanetTwo(color: Int) : PlanetImage(color)
+    class PlanetThree(color: Int) : PlanetImage(color)
+    class PlanetFour(color: Int) : PlanetImage(color)
+    class PlanetFive(color: Int) : PlanetImage(color)
+    class PlanetSix(color: Int) : PlanetImage(color)
 
     companion object {
         fun from(planet: Planet): PlanetImage {
@@ -27,17 +22,14 @@ sealed class PlanetImage(val color: Int) {
             val v = 40f + random.nextInt(90)
             val color = Color.HSVToColor(100, floatArrayOf(h, s, v))
 
-            return when (random.nextInt(9)) {
-                0 -> GasOne(color)
-                1 -> GasTwo(color)
-                2 -> GasThree(color)
-                3 -> RockyOne(color)
-                4 -> RockyTwo(color)
-                5 -> RockyThree(color)
-                6 -> WaterLandOne(color)
-                7 -> WaterLandTwo(color)
-                8 -> WaterLandThree(color)
-                else -> GasOne(color)
+            return when (random.nextInt(7)) {
+                1 -> PlanetOne(color)
+                2 -> PlanetTwo(color)
+                3 -> PlanetThree(color)
+                4 -> PlanetFour(color)
+                5 -> PlanetFive(color)
+                6 -> PlanetSix(color)
+                else -> PlanetOne(color)
             }
         }
     }
