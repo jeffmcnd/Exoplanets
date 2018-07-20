@@ -51,7 +51,11 @@ class PlanetDetailActivity : AppCompatActivity() {
                     is PlanetImage.GasTwo -> R.drawable.ic_planet_gas_2
                     is PlanetImage.GasThree -> R.drawable.ic_planet_gas_3
                     is PlanetImage.RockyOne -> R.drawable.ic_planet_rocky_1
+                    is PlanetImage.RockyTwo -> R.drawable.ic_planet_rocky_2
+                    is PlanetImage.RockyThree -> R.drawable.ic_planet_rocky_3
                     is PlanetImage.WaterLandOne -> R.drawable.ic_planet_water_land_1
+                    is PlanetImage.WaterLandTwo -> R.drawable.ic_planet_water_land_2
+                    is PlanetImage.WaterLandThree -> R.drawable.ic_planet_water_land_3
                 }
 
                 GlideApp.with(this)

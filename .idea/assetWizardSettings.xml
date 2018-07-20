@@ -14,11 +14,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="256" />
-                            <entry key="outputName" value="ic_planet_water_land_1" />
+                            <entry key="height" value="257" />
+                            <entry key="outputName" value="ic_planet_water_land_3" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Aidan Laing\Downloads\ic_planet_water_land_1.svg" />
-                            <entry key="width" value="256" />
+                            <entry key="sourceFile" value="C:\Users\Aidan Laing\Downloads\ic_planet_water_land_3.svg" />
+                            <entry key="width" value="258" />
                           </map>
                         </option>
                       </PersistentState>
