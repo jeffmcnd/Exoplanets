@@ -21,6 +21,7 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             planet: Planet,
             planetClickListener: (
                     planet: Planet,
+                    planetImage: PlanetImage,
                     planetImageIv: ImageView
             ) -> Unit
     ) = with(itemView) {
@@ -28,17 +29,8 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         ViewCompat.setTransitionName(planetImageIv, "image")
 
         val planetImage = planet.getPlanetImage()
-        val resId = when (planetImage) {
-            is PlanetImage.PlanetOne -> R.drawable.ic_planet_1
-            is PlanetImage.PlanetTwo -> R.drawable.ic_planet_2
-            is PlanetImage.PlanetThree -> R.drawable.ic_planet_3
-            is PlanetImage.PlanetFour -> R.drawable.ic_planet_4
-            is PlanetImage.PlanetFive -> R.drawable.ic_planet_5
-            is PlanetImage.PlanetSix -> R.drawable.ic_planet_6
-        }
-
         GlideApp.with(this)
-                .load(resId)
+                .load(planetImage.resId)
                 .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
                 .into(planetImageIv)
 
@@ -56,7 +48,7 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         )
 
         layout.setOnClickListener {
-            planetClickListener(planet, planetImageIv)
+            planetClickListener(planet, planetImage, planetImageIv)
         }
     }
 

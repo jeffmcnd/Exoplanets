@@ -31,4 +31,15 @@
         app:layout_constraintTop_toBottomOf="@+id/planetImageIv"
         tools:text="HD 142022 A b" />
 
+    <TextView
+        android:id="@+id/planetDistanceTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:theme="@style/NormalTextStyle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
+        tools:text="123 parsecs away" />
+
 </android.support.constraint.ConstraintLayout>

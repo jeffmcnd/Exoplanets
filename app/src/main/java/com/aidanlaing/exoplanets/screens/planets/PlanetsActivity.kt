@@ -15,6 +15,7 @@ import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
 import com.aidanlaing.exoplanets.common.livedata.NonNullObserver
 import com.aidanlaing.exoplanets.data.planets.Planet
+import com.aidanlaing.exoplanets.data.planets.PlanetImage
 import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailActivity
 import kotlinx.android.synthetic.main.activity_planets.*
 
@@ -35,8 +36,8 @@ class PlanetsActivity : AppCompatActivity() {
     }
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
-        val planetsAdapter = PlanetsAdapter({ planet, planetImageIv ->
-            goToPlanetDetail(planet, planetImageIv)
+        val planetsAdapter = PlanetsAdapter({ planet, planetImage, planetImageIv ->
+            goToPlanetDetail(planet, planetImage, planetImageIv)
         })
 
         val layoutManager = LinearLayoutManager(this)
@@ -60,7 +61,7 @@ class PlanetsActivity : AppCompatActivity() {
         viewModel.showNoConnection().observe(this, NonNullObserver { show ->
             val titleText = getString(R.string.no_internet_connection)
             val infoText = getString(R.string.no_internet_connection_info)
-            setError(viewModel, show, titleText, infoText)
+            setErrorView(viewModel, show, titleText, infoText)
         })
     }
 
@@ -68,11 +69,11 @@ class PlanetsActivity : AppCompatActivity() {
         viewModel.showGeneralError().observe(this, NonNullObserver { show ->
             val titleText = getString(R.string.error)
             val infoText = getString(R.string.error_info)
-            setError(viewModel, show, titleText, infoText)
+            setErrorView(viewModel, show, titleText, infoText)
         })
     }
 
-    private fun setError(
+    private fun setErrorView(
             viewModel: PlanetsViewModel,
             show: Boolean,
             titleText: String,
@@ -93,6 +94,7 @@ class PlanetsActivity : AppCompatActivity() {
 
     private fun goToPlanetDetail(
             planet: Planet,
+            planetImage: PlanetImage,
             planetImageIv: ImageView
     ) {
 
@@ -105,6 +107,7 @@ class PlanetsActivity : AppCompatActivity() {
 
         Intent(this, PlanetDetailActivity::class.java)
                 .putExtra(Constants.PLANET, planet)
+                .putExtra(Constants.PLANET_IMAGE, planetImage)
                 .putExtra(Constants.IMAGE_TRANSITION_NAME, imageTransitionName)
                 .run { startActivity(this, options.toBundle()) }
     }

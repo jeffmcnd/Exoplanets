@@ -23,8 +23,9 @@ class PlanetDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_planet_detail)
 
         val planet = intent.getParcelableExtra<Planet?>(Constants.PLANET)
+        val planetImage = intent.getParcelableExtra<PlanetImage?>(Constants.PLANET_IMAGE)
         val imageTransitionName = intent.getStringExtra(Constants.IMAGE_TRANSITION_NAME)
-        if (planet == null || imageTransitionName == null) {
+        if (planet == null || planetImage == null || imageTransitionName == null) {
             showToast(getString(R.string.error_unexpected))
             finish()
             return
@@ -34,36 +35,45 @@ class PlanetDetailActivity : AppCompatActivity() {
                 .of(this, Injector.provideViewModelFactory(this))
                 .get(PlanetDetailViewModel::class.java)
 
-        planetNameTv.text = planet.name
-
-        startEnterTransition(planet, imageTransitionName)
+        startEnterTransition(planetImage, imageTransitionName)
+        showPlanetData(planet)
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun startEnterTransition(planet: Planet, imageTransitionName: String) {
+    private fun startEnterTransition(
+            planetImage: PlanetImage,
+            imageTransitionName: String
+    ) {
         postponeEnterTransition()
+
         planetImageIv.transitionName = imageTransitionName
 
-        val planetImage = planet.getPlanetImage()
-        val resId = when (planetImage) {
-            is PlanetImage.PlanetOne -> R.drawable.ic_planet_1
-            is PlanetImage.PlanetTwo -> R.drawable.ic_planet_2
-            is PlanetImage.PlanetThree -> R.drawable.ic_planet_3
-            is PlanetImage.PlanetFour -> R.drawable.ic_planet_4
-            is PlanetImage.PlanetFive -> R.drawable.ic_planet_5
-            is PlanetImage.PlanetSix -> R.drawable.ic_planet_6
+        GlideApp.with(this)
+                .load(planetImage.resId)
+                .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
+                .listener(GlideListener<Drawable>({
+                    startPostponedEnterTransition()
+                }, {
+                    startPostponedEnterTransition()
+                }))
+                .into(planetImageIv)
+    }
+
+    private fun showPlanetData(planet: Planet) {
+        planetNameTv.text = planet.name
+
+        val distance = if (planet.starDistanceParsecs != null) {
+            planet.starDistanceParsecs.toString()
+        } else {
+            getString(R.string.unknown)
         }
 
-        GlideApp.with(this)
-                .load(resId)
-                .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
-                .listener(GlideListener<Drawable>(
-                        { startPostponedEnterTransition() },
-                        { startPostponedEnterTransition() }
-                ))
-                .into(planetImageIv)
+        planetDistanceTv.text = getString(
+                R.string.formatted_parsecs_away,
+                distance
+        )
     }
 }
