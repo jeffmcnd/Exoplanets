@@ -11,8 +11,8 @@ interface PlanetsDao {
     @Query("SELECT * FROM planet")
     fun get(): List<PlanetLocal>
 
-    @Query("SELECT * FROM planet WHERE planetName LIKE :planetName LIMIT 1")
-    fun get(planetName: String): PlanetLocal?
+    @Query("SELECT * FROM planet WHERE name LIKE :name LIMIT 1")
+    fun get(name: String): PlanetLocal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(planets: List<PlanetLocal>)

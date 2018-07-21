@@ -9,28 +9,36 @@ import com.aidanlaing.exoplanets.data.planets.Planet
 @Entity(tableName = "planet")
 data class PlanetLocal(
         @PrimaryKey
-        val planetName: String,
-        val hostStarName: String?,
-        val planetLetter: String?,
+        val name: String,
+        val letter: String?,
         val discoveryMethod: String?,
         val numPlanetsInSystem: Int?,
         val orbitalPeriodDays: Double?,
-        val planetJupiterMass: Double?,
-        val planetJupiterRadius: Double?,
-        val planetDensity: Double?
+        val jupiterMass: Double?,
+        val jupiterRadius: Double?,
+        val density: Double?,
+        val starName: String?,
+        val starDistanceParsecs: Double?,
+        val starTemperatureKelvin: Double?,
+        val starSunMass: Double?,
+        val starSunRadius: Double?
 ) : Mappable<Planet> {
 
     override fun mapToResult(): Result<Planet> {
         val planet = Planet(
-                planetName,
-                hostStarName,
-                planetLetter,
+                name,
+                letter,
                 discoveryMethod,
                 numPlanetsInSystem,
                 orbitalPeriodDays,
-                planetJupiterMass,
-                planetJupiterRadius,
-                planetDensity
+                jupiterMass,
+                jupiterRadius,
+                density,
+                starName,
+                starDistanceParsecs,
+                starTemperatureKelvin,
+                starSunMass,
+                starSunRadius
         )
 
         return Result.Success(planet)

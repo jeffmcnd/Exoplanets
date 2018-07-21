@@ -2,6 +2,7 @@ package com.aidanlaing.exoplanets.common
 
 import android.content.Context
 import com.aidanlaing.exoplanets.BuildConfig
+import com.aidanlaing.exoplanets.common.okhttp.ConnectivityInterceptor
 import com.aidanlaing.exoplanets.data.AppDatabase
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
 import com.aidanlaing.exoplanets.data.planets.PlanetsRepo
@@ -36,8 +37,9 @@ object Injector {
     )
 
     fun provideRetrofit(
+            context: Context,
             baseUrl: String = BuildConfig.EXOPLANET_BASE_URL,
-            okHttpClient: OkHttpClient = provideOkHttpClient(),
+            okHttpClient: OkHttpClient = provideOkHttpClient(context),
             converterFactory: Converter.Factory = GsonConverterFactory.create(),
             callAdapterFactory: CallAdapter.Factory = CoroutineCallAdapterFactory.invoke()
     ): Retrofit = cachedRetrofits[baseUrl] ?: Retrofit.Builder()
@@ -48,9 +50,17 @@ object Injector {
             .build()
             .also { retrofit -> cachedRetrofits[baseUrl] = retrofit }
 
-    fun provideOkHttpClient(): OkHttpClient = cachedOkHttpClient ?: OkHttpClient.Builder()
+    fun provideOkHttpClient(
+            context: Context,
+            connectivityInterceptor: ConnectivityInterceptor = provideConnectivityInterceptor(context)
+    ): OkHttpClient = cachedOkHttpClient ?: OkHttpClient.Builder()
+            .addInterceptor(connectivityInterceptor)
             .build()
             .also { okHttpClient -> cachedOkHttpClient = okHttpClient }
+
+    fun provideConnectivityInterceptor(
+            context: Context
+    ): ConnectivityInterceptor = ConnectivityInterceptor(context)
 
     fun provideAppDatabase(
             context: Context,
@@ -59,7 +69,7 @@ object Injector {
 
     fun providePlanetsRepo(
             context: Context,
-            planetsApi: PlanetsApi = providePlanetsApi(),
+            planetsApi: PlanetsApi = providePlanetsApi(context),
             planetsDao: PlanetsDao = providePlanetsDao(context)
     ): PlanetsRepo = PlanetsRepo.getInstance(
             PlanetsRemoteDataSource.getInstance(planetsApi),
@@ -67,7 +77,8 @@ object Injector {
     )
 
     fun providePlanetsApi(
-            retrofit: Retrofit = provideRetrofit()
+            context: Context,
+            retrofit: Retrofit = provideRetrofit(context)
     ): PlanetsApi = retrofit.create(PlanetsApi::class.java)
 
     fun providePlanetsDao(

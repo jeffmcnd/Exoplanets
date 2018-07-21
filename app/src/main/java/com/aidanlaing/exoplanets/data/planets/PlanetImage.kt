@@ -14,7 +14,7 @@ sealed class PlanetImage(val color: Int) {
 
     companion object {
         fun from(planet: Planet): PlanetImage {
-            val seed = planet.planetName.hashCode().toLong()
+            val seed = planet.name.hashCode().toLong()
             val random = Random(seed)
 
             val h = 0f + random.nextInt(360)

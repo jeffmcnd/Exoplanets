@@ -4,13 +4,17 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.ImageView
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
+import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailActivity
 import kotlinx.android.synthetic.main.activity_planets.*
 
@@ -32,8 +36,8 @@ class PlanetsActivity : AppCompatActivity() {
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
 
-        val planetsAdapter = PlanetsAdapter({ planet ->
-            goToPlanetDetail(planet.planetName)
+        val planetsAdapter = PlanetsAdapter({ planet, planetImageIv ->
+            goToPlanetDetail(planet, planetImageIv)
         })
 
         val layoutManager = LinearLayoutManager(this)
@@ -93,9 +97,21 @@ class PlanetsActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToPlanetDetail(planetName: String) {
+    private fun goToPlanetDetail(
+            planet: Planet,
+            planetImageIv: ImageView
+    ) {
+
+        val imageTransitionName = ViewCompat.getTransitionName(planetImageIv)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                planetImageIv,
+                imageTransitionName
+        )
+
         Intent(this, PlanetDetailActivity::class.java)
-                .putExtra(Constants.PLANET_NAME, planetName)
-                .run { startActivity(this) }
+                .putExtra(Constants.PLANET, planet)
+                .putExtra(Constants.IMAGE_TRANSITION_NAME, imageTransitionName)
+                .run { startActivity(this, options.toBundle()) }
     }
 }

@@ -3,12 +3,12 @@ package com.aidanlaing.exoplanets.screens.planets
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
-import java.io.IOException
 import kotlin.coroutines.experimental.CoroutineContext
 
 class PlanetsViewModel(
@@ -65,7 +65,7 @@ class PlanetsViewModel(
 
     private fun onError(exception: Exception) {
         when (exception) {
-            is IOException -> noConnection.value = true
+            is NoConnectionException -> noConnection.value = true
             else -> generalError.value = true
         }
     }

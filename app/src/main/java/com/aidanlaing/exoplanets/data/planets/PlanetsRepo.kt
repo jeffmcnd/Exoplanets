@@ -33,7 +33,7 @@ private constructor(
     }
 
     private fun cachePlanet(planet: Planet) {
-        cachedPlanets[planet.planetName] = planet
+        cachedPlanets[planet.name] = planet
     }
 
     override suspend fun getPlanets(): Result<ArrayList<Planet>> {
@@ -65,11 +65,11 @@ private constructor(
         }
     }
 
-    override suspend fun getPlanet(planetName: String): Result<Planet> {
-        val cached = cachedPlanets[planetName]
+    override suspend fun getPlanet(name: String): Result<Planet> {
+        val cached = cachedPlanets[name]
         if (cached != null) return Result.Success(cached)
 
-        val localResult = localDataSource.getPlanet(planetName)
+        val localResult = localDataSource.getPlanet(name)
         when (localResult) {
             is Result.Success -> {
                 cachePlanet(localResult.data)
@@ -77,7 +77,7 @@ private constructor(
             }
         }
 
-        val remoteResult = remoteDataSource.getPlanet(planetName)
+        val remoteResult = remoteDataSource.getPlanet(name)
         return when (remoteResult) {
             is Result.Success -> {
                 cachePlanet(remoteResult.data)

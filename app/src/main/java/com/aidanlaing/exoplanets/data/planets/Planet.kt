@@ -1,33 +1,45 @@
 package com.aidanlaing.exoplanets.data.planets
 
+import android.os.Parcelable
 import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.local.PlanetLocal
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Planet(
-        val planetName: String,
-        val hostStarName: String?,
-        val planetLetter: String?,
+        val name: String,
+        val letter: String?,
         val discoveryMethod: String?,
         val numPlanetsInSystem: Int?,
         val orbitalPeriodDays: Double?,
-        val planetJupiterMass: Double?,
-        val planetJupiterRadius: Double?,
-        val planetDensity: Double?
-) : Mappable<PlanetLocal> {
+        val jupiterMass: Double?,
+        val jupiterRadius: Double?,
+        val density: Double?,
+        val starName: String?,
+        val starDistanceParsecs: Double?,
+        val starTemperatureKelvin: Double?,
+        val starSunMass: Double?,
+        val starSunRadius: Double?
+) : Mappable<PlanetLocal>, Parcelable {
 
     override fun mapToResult(): Result<PlanetLocal> {
         val localPlanet = PlanetLocal(
-                planetName,
-                hostStarName,
-                planetLetter,
+                name,
+                letter,
                 discoveryMethod,
                 numPlanetsInSystem,
                 orbitalPeriodDays,
-                planetJupiterMass,
-                planetJupiterRadius,
-                planetDensity
+                jupiterMass,
+                jupiterRadius,
+                density,
+                starName,
+                starDistanceParsecs,
+                starTemperatureKelvin,
+                starSunMass,
+                starSunRadius
         )
+
         return Result.Success(localPlanet)
     }
 

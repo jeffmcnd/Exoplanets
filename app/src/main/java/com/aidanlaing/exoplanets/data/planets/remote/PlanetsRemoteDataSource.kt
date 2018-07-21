@@ -39,8 +39,8 @@ private constructor(
         Result.Failure(exception)
     }
 
-    override suspend fun getPlanet(planetName: String): Result<Planet> = try {
-        planetsApi.get(where = "pl_name like '$planetName'")
+    override suspend fun getPlanet(name: String): Result<Planet> = try {
+        planetsApi.get(where = "pl_name like '$name'")
                 .await()
                 .mapNotNull { planetRemote ->
                     val mappingResult = planetRemote.mapToResult()

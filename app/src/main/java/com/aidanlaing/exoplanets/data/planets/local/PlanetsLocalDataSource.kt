@@ -38,8 +38,8 @@ private constructor(
         Result.Failure(exception)
     }
 
-    override suspend fun getPlanet(planetName: String): Result<Planet> = try {
-        planetsDao.get(planetName)?.mapToResult() ?: Result.Failure(NotFoundException())
+    override suspend fun getPlanet(name: String): Result<Planet> = try {
+        planetsDao.get(name)?.mapToResult() ?: Result.Failure(NotFoundException())
     } catch (exception: Exception) {
         Result.Failure(exception)
     }

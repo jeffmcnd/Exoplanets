@@ -2,10 +2,14 @@ package com.aidanlaing.exoplanets.common.adapters.planets
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.aidanlaing.exoplanets.data.planets.Planet
 
 class PlanetsAdapter(
-        private val planetClickListener: (planet: Planet) -> Unit,
+        private val planetClickListener: (
+                planet: Planet,
+                planetImageIv: ImageView
+        ) -> Unit,
         private var planets: ArrayList<Planet> = ArrayList()
 ) : RecyclerView.Adapter<PlanetViewHolder>() {
 
