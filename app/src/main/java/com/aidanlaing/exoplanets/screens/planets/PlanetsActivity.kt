@@ -1,6 +1,5 @@
 package com.aidanlaing.exoplanets.screens.planets
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +13,7 @@ import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
+import com.aidanlaing.exoplanets.common.livedata.NonNullObserver
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailActivity
 import kotlinx.android.synthetic.main.activity_planets.*
@@ -35,7 +35,6 @@ class PlanetsActivity : AppCompatActivity() {
     }
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
-
         val planetsAdapter = PlanetsAdapter({ planet, planetImageIv ->
             goToPlanetDetail(planet, planetImageIv)
         })
@@ -45,37 +44,31 @@ class PlanetsActivity : AppCompatActivity() {
         planetsRv.adapter = planetsAdapter
         planetsRv.layoutManager = layoutManager
 
-        viewModel.getPlanets().observe(this, Observer { planets ->
-            planets?.let { planetsAdapter.replaceItems(planets) }
+        viewModel.getPlanets().observe(this, NonNullObserver { planets ->
+            planetsAdapter.replaceItems(planets)
         })
     }
 
     private fun setUpLoading(viewModel: PlanetsViewModel) {
-        viewModel.showLoading().observe(this, Observer { show ->
-            show?.let {
-                if (show) progressBar.visibility = View.VISIBLE
-                else progressBar.visibility = View.GONE
-            }
+        viewModel.showLoading().observe(this, NonNullObserver { show ->
+            if (show) progressBar.visibility = View.VISIBLE
+            else progressBar.visibility = View.GONE
         })
     }
 
     private fun setUpNoConnection(viewModel: PlanetsViewModel) {
-        viewModel.showNoConnection().observe(this, Observer { show ->
-            show?.let {
-                val titleText = getString(R.string.no_internet_connection)
-                val infoText = getString(R.string.no_internet_connection_info)
-                setError(viewModel, show, titleText, infoText)
-            }
+        viewModel.showNoConnection().observe(this, NonNullObserver { show ->
+            val titleText = getString(R.string.no_internet_connection)
+            val infoText = getString(R.string.no_internet_connection_info)
+            setError(viewModel, show, titleText, infoText)
         })
     }
 
     private fun setUpGeneralError(viewModel: PlanetsViewModel) {
-        viewModel.showGeneralError().observe(this, Observer { show ->
-            show?.let {
-                val titleText = getString(R.string.error)
-                val infoText = getString(R.string.error_info)
-                setError(viewModel, show, titleText, infoText)
-            }
+        viewModel.showGeneralError().observe(this, NonNullObserver { show ->
+            val titleText = getString(R.string.error)
+            val infoText = getString(R.string.error_info)
+            setError(viewModel, show, titleText, infoText)
         })
     }
 
@@ -85,6 +78,7 @@ class PlanetsActivity : AppCompatActivity() {
             titleText: String,
             infoText: String
     ) {
+
         if (show) {
             errorView.visibility = View.VISIBLE
             errorView.setTitleText(titleText)
