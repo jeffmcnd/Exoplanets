@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.extensions.defaultIfBlank
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
@@ -18,11 +17,11 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(
             planet: Planet,
-            planetClickListener: (planet: Planet, planetImageIv: ImageView) -> Unit
+            planetClickListener: (planetClicked: PlanetClicked) -> Unit
     ) = with(itemView) {
 
         layout.setOnClickListener {
-            planetClickListener(planet, planetImageIv)
+            planetClickListener(PlanetClicked(planet, planetImageIv))
         }
 
         ViewCompat.setTransitionName(planetImageIv, planet.name)

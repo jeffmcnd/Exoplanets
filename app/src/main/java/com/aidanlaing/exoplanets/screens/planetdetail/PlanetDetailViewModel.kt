@@ -3,6 +3,7 @@ package com.aidanlaing.exoplanets.screens.planetdetail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.common.livedata.Event
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
@@ -17,6 +18,13 @@ class PlanetDetailViewModel(
 ) : ViewModel() {
 
     private val isFavourite = MutableLiveData<Boolean>()
+    private val backEvent = MutableLiveData<Event<Boolean>>()
+
+    fun onBack(): LiveData<Event<Boolean>> = backEvent
+
+    fun backClicked() {
+        backEvent.value = Event(true)
+    }
 
     fun isFavourite(planet: Planet): LiveData<Boolean> {
         if (isFavourite.value == null) loadIsFavourite(planet)

@@ -36,7 +36,7 @@ class PlanetDetailActivity : AppCompatActivity() {
 
         startEnterTransition(planet)
         setPlanetData(planet)
-        setUpBackListener()
+        setUpBackListener(viewModel)
         setUpFavouriteListener(viewModel, planet)
     }
 
@@ -73,9 +73,15 @@ class PlanetDetailActivity : AppCompatActivity() {
         )
     }
 
-    private fun setUpBackListener() {
+    private fun setUpBackListener(viewModel: PlanetDetailViewModel) {
+        viewModel.onBack().observe(this, NonNullObserver { event ->
+            event.runIfNotHandled {
+                onBackPressed()
+            }
+        })
+
         backIv.setOnClickListener {
-            onBackPressed()
+            viewModel.backClicked()
         }
     }
 

@@ -3,7 +3,9 @@ package com.aidanlaing.exoplanets.screens.planets
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClicked
 import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
+import com.aidanlaing.exoplanets.common.livedata.Event
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
@@ -18,9 +20,10 @@ class PlanetsViewModel(
 ) : ViewModel() {
 
     private val planets = MutableLiveData<ArrayList<Planet>>()
-    private val loading = MutableLiveData<Boolean>()
-    private val noConnection = MutableLiveData<Boolean>()
-    private val generalError = MutableLiveData<Boolean>()
+    private val showLoading = MutableLiveData<Boolean>()
+    private val showNoConnection = MutableLiveData<Boolean>()
+    private val showGeneralError = MutableLiveData<Boolean>()
+    private val goToDetailEvent = MutableLiveData<Event<PlanetClicked>>()
 
     fun getPlanets(): LiveData<ArrayList<Planet>> {
         if (planets.value == null) loadPlanets()
@@ -28,18 +31,24 @@ class PlanetsViewModel(
     }
 
     fun showLoading(): LiveData<Boolean> {
-        if (loading.value == null) loading.value = false
-        return loading
+        if (showLoading.value == null) showLoading.value = false
+        return showLoading
     }
 
     fun showNoConnection(): LiveData<Boolean> {
-        if (noConnection.value == null) noConnection.value = false
-        return noConnection
+        if (showNoConnection.value == null) showNoConnection.value = false
+        return showNoConnection
     }
 
     fun showGeneralError(): LiveData<Boolean> {
-        if (generalError.value == null) generalError.value = false
-        return generalError
+        if (showGeneralError.value == null) showGeneralError.value = false
+        return showGeneralError
+    }
+
+    fun goToDetail(): LiveData<Event<PlanetClicked>> = goToDetailEvent
+
+    fun planetClicked(planetClickedParams: PlanetClicked) {
+        goToDetailEvent.value = Event(planetClickedParams)
     }
 
     fun retryClicked() {
@@ -47,9 +56,9 @@ class PlanetsViewModel(
     }
 
     private fun loadPlanets() = launch(uiContext) {
-        loading.value = true
-        noConnection.value = false
-        generalError.value = false
+        showLoading.value = true
+        showNoConnection.value = false
+        showGeneralError.value = false
 
         val result = withContext(ioContext) {
             planetsDataSource.getPlanets()
@@ -57,16 +66,21 @@ class PlanetsViewModel(
 
         when (result) {
             is Result.Success -> planets.value = result.data
+                    .sortedWith(Comparator { planetOne, planetTwo ->
+                        planetOne.compareTo(planetTwo)
+                    })
+                    .mapTo(ArrayList()) { it }
+
             is Result.Failure -> onError(result.error)
         }
 
-        loading.value = false
+        showLoading.value = false
     }
 
     private fun onError(exception: Exception) {
         when (exception) {
-            is NoConnectionException -> noConnection.value = true
-            else -> generalError.value = true
+            is NoConnectionException -> showNoConnection.value = true
+            else -> showGeneralError.value = true
         }
     }
 

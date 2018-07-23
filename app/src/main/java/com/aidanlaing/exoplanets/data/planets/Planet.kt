@@ -46,6 +46,8 @@ data class Planet(
         return Result.Success(localPlanet)
     }
 
+    fun compareTo(planet: Planet): Int = name.compareTo(planet.name, true)
+
     fun getPlanetImage() = PlanetImage.from(this)
 
     fun getRoundedDistanceParsecs() = starDistanceParsecs?.roundToInt()?.toString() ?: ""

@@ -43,13 +43,11 @@ private constructor(
         }
 
         val localResult = localDataSource.getPlanets()
-        when (localResult) {
-            is Result.Success -> {
-                val data = localResult.data
-                if (data.isNotEmpty()) {
-                    cachePlanets(data)
-                    return localResult
-                }
+        if (localResult is Result.Success) {
+            val data = localResult.data
+            if (data.isNotEmpty()) {
+                cachePlanets(data)
+                return localResult
             }
         }
 
@@ -70,11 +68,9 @@ private constructor(
         if (cached != null) return Result.Success(cached)
 
         val localResult = localDataSource.getPlanet(name)
-        when (localResult) {
-            is Result.Success -> {
-                cachePlanet(localResult.data)
-                return localResult
-            }
+        if (localResult is Result.Success) {
+            cachePlanet(localResult.data)
+            return localResult
         }
 
         val remoteResult = remoteDataSource.getPlanet(name)

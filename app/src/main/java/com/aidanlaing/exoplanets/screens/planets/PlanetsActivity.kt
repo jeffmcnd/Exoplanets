@@ -35,18 +35,25 @@ class PlanetsActivity : AppCompatActivity() {
     }
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
-        val planetsAdapter = PlanetsAdapter({ planet, planetImageIv ->
-            goToPlanetDetail(planet, planetImageIv)
+        val planetsAdapter = PlanetsAdapter({ planetClicked ->
+            viewModel.planetClicked(planetClicked)
         })
 
         val layoutManager = LinearLayoutManager(this)
 
-        planetsRv.adapter = planetsAdapter
-        planetsRv.layoutManager = layoutManager
+        viewModel.goToDetail().observe(this, NonNullObserver { event ->
+            event.runIfNotHandled {
+                val planetClicked = event.content
+                goToPlanetDetail(planetClicked.planet, planetClicked.planetImageView)
+            }
+        })
 
         viewModel.getPlanets().observe(this, NonNullObserver { planets ->
             planetsAdapter.replaceItems(planets)
         })
+
+        planetsRv.layoutManager = layoutManager
+        planetsRv.adapter = planetsAdapter
     }
 
     private fun setUpLoading(viewModel: PlanetsViewModel) {
