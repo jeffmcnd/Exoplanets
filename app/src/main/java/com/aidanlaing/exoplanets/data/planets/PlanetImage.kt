@@ -7,8 +7,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class PlanetImage
-private constructor(val color: Int, val resId: Int) : Parcelable {
+data class PlanetImage(val color: Int, val resId: Int) : Parcelable {
 
     companion object {
         fun from(planet: Planet): PlanetImage {

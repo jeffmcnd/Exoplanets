@@ -6,40 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".screens.planetdetail.PlanetDetailActivity">
 
-    <ImageView
-        android:id="@+id/planetImageIv"
-        android:layout_width="204dp"
-        android:layout_height="204dp"
-        android:layout_marginTop="64dp"
-        android:contentDescription="@null"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_planet_1" />
-
-    <TextView
-        android:id="@+id/planetNameTv"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:theme="@style/HeaderOneTextStyle"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planetImageIv"
-        tools:text="HD 142022 A b" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/planetDistanceTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:theme="@style/NormalTextStyle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
-        tools:text="123 parsecs away" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/backIv"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/back"
+                android:padding="16dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/planetImageIv"
+                android:layout_width="204dp"
+                android:layout_height="204dp"
+                android:layout_marginTop="64dp"
+                android:contentDescription="@null"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/backIv"
+                tools:src="@drawable/ic_planet_1" />
+
+            <TextView
+                android:id="@+id/planetNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:theme="@style/HeaderOneTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetImageIv"
+                tools:text="HD 142022 A b" />
+
+            <TextView
+                android:id="@+id/planetDistanceTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
+                tools:text="123 parsecs away" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

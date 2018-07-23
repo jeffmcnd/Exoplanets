@@ -9,7 +9,7 @@ interface PlanetsApi {
     @GET("/cgi-bin/nstedAPI/nph-nstedAPI")
     fun get(
             @Query("table") table: String = "exoplanets",
-            @Query("select") select: String = "pl_name,pl_hostname,pl_letter,pl_discmethod,pl_pnum,pl_orbper,pl_bmassj,pl_radj,pl_dens,st_dist,st_teff,st_mass,st_radius",
+            @Query("select") select: String = "pl_name,pl_hostname,pl_letter,pl_discmethod,pl_pnum,pl_orbper,pl_bmassj,pl_radj,pl_dens,st_dist,st_teff,st_mass,st_rad",
             @Query("order") order: String = "dec",
             @Query("format") format: String = "json",
             @Query("where") where: String? = null

@@ -37,6 +37,10 @@ private constructor(
     }
 
     override suspend fun getPlanets(): Result<ArrayList<Planet>> {
+        /*return Result.Success(arrayListOf(Planet("Aidan", "A", "", 5,
+                12.2, 123.0, 12.0, 12.0, "Victoria",
+                null, 12.0, 12.0, 12.0)))*/
+
         val cached = cachedPlanets.values
         if (cached.isNotEmpty()) {
             return Result.Success(ArrayList(cached))

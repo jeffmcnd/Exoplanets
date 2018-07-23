@@ -19,7 +19,7 @@ data class PlanetRemote(
         @SerializedName("st_dist") val starDistanceParsecs: Double?,
         @SerializedName("st_teff") val starTemperatureKelvin: Double?,
         @SerializedName("st_mass") val starSunMass: Double?,
-        @SerializedName("st_radius") val starSunRadius: Double?
+        @SerializedName("st_rad") val starSunRadius: Double?
 ) : Mappable<Planet> {
 
     override fun mapToResult(): Result<Planet> {

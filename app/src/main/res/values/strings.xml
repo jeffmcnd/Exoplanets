@@ -12,5 +12,6 @@
 
     <string name="retry">Retry</string>
     <string name="unknown">Unknown</string>
+    <string name="back">Back</string>
 
 </resources>

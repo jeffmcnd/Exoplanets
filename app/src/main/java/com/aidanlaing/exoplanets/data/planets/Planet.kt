@@ -5,6 +5,7 @@ import com.aidanlaing.exoplanets.data.Mappable
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.local.PlanetLocal
 import kotlinx.android.parcel.Parcelize
+import kotlin.math.roundToInt
 
 @Parcelize
 data class Planet(
@@ -44,4 +45,7 @@ data class Planet(
     }
 
     fun getPlanetImage() = PlanetImage.from(this)
+
+    fun getRoundedDistanceParsecs() = starDistanceParsecs?.roundToInt()?.toString() ?: ""
+    fun getDistanceParsecs() = starDistanceParsecs?.toString() ?: ""
 }

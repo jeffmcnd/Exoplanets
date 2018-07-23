@@ -4,14 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.aidanlaing.exoplanets.data.planets.Planet
-import com.aidanlaing.exoplanets.data.planets.PlanetImage
 
 class PlanetsAdapter(
-        private val planetClickListener: (
-                planet: Planet,
-                planetImage: PlanetImage,
-                planetImageIv: ImageView
-        ) -> Unit,
+        private val planetClickListener: (planet: Planet, planetImageIv: ImageView) -> Unit,
         private var planets: ArrayList<Planet> = ArrayList()
 ) : RecyclerView.Adapter<PlanetViewHolder>() {
 
