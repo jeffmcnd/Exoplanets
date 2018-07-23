@@ -37,10 +37,6 @@ private constructor(
     }
 
     override suspend fun getPlanets(): Result<ArrayList<Planet>> {
-        /*return Result.Success(arrayListOf(Planet("Aidan", "A", "", 5,
-                12.2, 123.0, 12.0, 12.0, "Victoria",
-                null, 12.0, 12.0, 12.0)))*/
-
         val cached = cachedPlanets.values
         if (cached.isNotEmpty()) {
             return Result.Success(ArrayList(cached))
@@ -91,7 +87,15 @@ private constructor(
         }
     }
 
-    override suspend fun savePlanets(
-            planets: ArrayList<Planet>
-    ): Result<ArrayList<Planet>> = localDataSource.savePlanets(planets)
+    override suspend fun savePlanets(planets: ArrayList<Planet>): Result<ArrayList<Planet>> =
+            localDataSource.savePlanets(planets)
+
+    override suspend fun savePlanet(planet: Planet): Result<Boolean> =
+            localDataSource.savePlanet(planet)
+
+    override suspend fun getFavouritePlanets(): Result<ArrayList<Planet>> =
+            localDataSource.getFavouritePlanets()
+
+    override suspend fun isFavouritePlanet(planetName: String): Result<Boolean> =
+            localDataSource.isFavouritePlanet(planetName)
 }

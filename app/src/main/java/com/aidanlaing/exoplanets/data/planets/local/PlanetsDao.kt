@@ -17,4 +17,10 @@ interface PlanetsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(planets: List<PlanetLocal>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(planet: PlanetLocal)
+
+    @Query("SELECT * FROM planet WHERE isFavourite")
+    fun getFavourites(): List<PlanetLocal>
+
 }

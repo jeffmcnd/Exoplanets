@@ -31,6 +31,7 @@ data class PlanetRemote(
 
         val planet = Planet(
                 name,
+                false,
                 letter,
                 discoveryMethod,
                 numPlanetsInSystem,

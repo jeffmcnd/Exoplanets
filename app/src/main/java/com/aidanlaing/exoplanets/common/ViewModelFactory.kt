@@ -21,7 +21,7 @@ class ViewModelFactory(
                 PlanetsViewModel(uiContext, ioContext, planetsDataSource)
 
             modelClass.isAssignableFrom(PlanetDetailViewModel::class.java) ->
-                PlanetDetailViewModel()
+                PlanetDetailViewModel(uiContext, ioContext, planetsDataSource)
 
             else -> null
 

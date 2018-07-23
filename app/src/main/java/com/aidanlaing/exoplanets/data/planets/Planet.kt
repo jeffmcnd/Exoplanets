@@ -10,6 +10,7 @@ import kotlin.math.roundToInt
 @Parcelize
 data class Planet(
         val name: String,
+        var isFavourite: Boolean,
         val letter: String?,
         val discoveryMethod: String?,
         val numPlanetsInSystem: Int?,
@@ -27,6 +28,7 @@ data class Planet(
     override fun mapToResult(): Result<PlanetLocal> {
         val localPlanet = PlanetLocal(
                 name,
+                isFavourite,
                 letter,
                 discoveryMethod,
                 numPlanetsInSystem,

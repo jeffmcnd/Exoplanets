@@ -58,4 +58,12 @@ private constructor(
 
     override suspend fun savePlanets(planets: ArrayList<Planet>) =
             Result.Failure(InvalidOperationException())
+
+    override suspend fun savePlanet(planet: Planet) = Result.Failure(InvalidOperationException())
+
+    override suspend fun getFavouritePlanets() = Result.Failure(InvalidOperationException())
+
+    override suspend fun isFavouritePlanet(planetName: String) =
+            Result.Failure(InvalidOperationException())
+
 }

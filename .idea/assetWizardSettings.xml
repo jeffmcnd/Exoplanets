@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_arrow_back_black_24dp" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_heart_outline_white_24dp" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Aidan Laing\Downloads\ic_planet_6.svg" />
+                            <entry key="sourceFile" value="C:\Users\Aidan Laing\Downloads\ic_heart_outline_white_24dp.svg" />
                           </map>
                         </option>
                       </PersistentState>
