@@ -10,6 +10,7 @@ import com.aidanlaing.exoplanets.data.planets.Planet
 data class PlanetLocal(
         @PrimaryKey
         val name: String,
+        val discoveryYear: String,
         val isFavourite: Boolean,
         val letter: String?,
         val discoveryMethod: String?,
@@ -28,6 +29,7 @@ data class PlanetLocal(
     override fun mapToResult(): Result<Planet> {
         val planet = Planet(
                 name,
+                discoveryYear,
                 isFavourite,
                 letter,
                 discoveryMethod,

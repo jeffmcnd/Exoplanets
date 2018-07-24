@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PlanetRemote(
         @SerializedName("pl_name") val name: String?,
+        @SerializedName("pl_disc") val discoveryYear: String?,
         @SerializedName("pl_letter") val letter: String?,
         @SerializedName("pl_discmethod") val discoveryMethod: String?,
         @SerializedName("pl_pnum") val numPlanetsInSystem: Int?,
@@ -24,13 +25,15 @@ data class PlanetRemote(
 
     override fun mapToResult(): Result<Planet> {
         val name = name
+        val discoveryYear = discoveryYear
 
-        if (name == null || name.isBlank()) {
+        if (name == null || name.isBlank() || discoveryYear == null || discoveryYear.isBlank()) {
             return Result.Failure(MappingException())
         }
 
         val planet = Planet(
                 name,
+                discoveryYear,
                 false,
                 letter,
                 discoveryMethod,

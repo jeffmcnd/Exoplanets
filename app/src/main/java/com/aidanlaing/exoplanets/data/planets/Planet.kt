@@ -10,6 +10,7 @@ import kotlin.math.roundToInt
 @Parcelize
 data class Planet(
         val name: String,
+        val discoveryYear: String,
         var isFavourite: Boolean,
         val letter: String?,
         val discoveryMethod: String?,
@@ -28,6 +29,7 @@ data class Planet(
     override fun mapToResult(): Result<PlanetLocal> {
         val localPlanet = PlanetLocal(
                 name,
+                discoveryYear,
                 isFavourite,
                 letter,
                 discoveryMethod,
@@ -46,7 +48,18 @@ data class Planet(
         return Result.Success(localPlanet)
     }
 
-    fun compareTo(planet: Planet): Int = name.compareTo(planet.name, true)
+    fun compareTo(planet: Planet): Int {
+        val discoverYearInt = discoveryYear.toIntOrNull()
+        val compareDiscoveryYearInt = planet.discoveryYear.toIntOrNull()
+        return when {
+            discoverYearInt == null && compareDiscoveryYearInt == null -> 0
+            discoverYearInt == null -> 1
+            compareDiscoveryYearInt == null -> -1
+            discoverYearInt > compareDiscoveryYearInt -> -1
+            discoverYearInt < compareDiscoveryYearInt -> 1
+            else -> name.compareTo(planet.name)
+        }
+    }
 
     fun getPlanetImage() = PlanetImage.from(this)
 

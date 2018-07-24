@@ -15,7 +15,9 @@ import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
 import com.aidanlaing.exoplanets.common.livedata.NonNullObserver
 import com.aidanlaing.exoplanets.data.planets.Planet
+import com.aidanlaing.exoplanets.screens.favourites.FavouritesActivity
 import com.aidanlaing.exoplanets.screens.planetdetail.PlanetDetailActivity
+import com.aidanlaing.exoplanets.screens.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_planets.*
 
 class PlanetsActivity : AppCompatActivity() {
@@ -32,25 +34,28 @@ class PlanetsActivity : AppCompatActivity() {
         setUpLoading(viewModel)
         setUpNoConnection(viewModel)
         setUpGeneralError(viewModel)
+        setUpFavouritesListener(viewModel)
+        setUpSearchListener(viewModel)
     }
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
-        val planetsAdapter = PlanetsAdapter({ planetClicked ->
-            viewModel.planetClicked(planetClicked)
+        val planetsAdapter = PlanetsAdapter({ planetClick ->
+            layout.requestFocus()
+            viewModel.planetClicked(planetClick)
         })
 
         val layoutManager = LinearLayoutManager(this)
 
         viewModel.goToDetail().observe(this, NonNullObserver { event ->
-            event.runIfNotHandled {
-                val planetClicked = event.content
-                goToPlanetDetail(planetClicked.planet, planetClicked.planetImageView)
+            event.invokeWithData { data ->
+                goToPlanetDetail(data.planet, data.planetImageView)
             }
         })
 
-        viewModel.getPlanets().observe(this, NonNullObserver { planets ->
-            planetsAdapter.replaceItems(planets)
-        })
+        viewModel.getPlanets()
+                .observe(this, NonNullObserver { planets ->
+                    planetsAdapter.replaceItems(planets)
+                })
 
         planetsRv.layoutManager = layoutManager
         planetsRv.adapter = planetsAdapter
@@ -79,6 +84,26 @@ class PlanetsActivity : AppCompatActivity() {
         })
     }
 
+    private fun setUpFavouritesListener(viewModel: PlanetsViewModel) {
+        viewModel.goToFavourites().observe(this, NonNullObserver { event ->
+            event.invoke { goToFavourites() }
+        })
+
+        favouritesTv.setOnClickListener {
+            viewModel.favouritesClicked()
+        }
+    }
+
+    private fun setUpSearchListener(viewModel: PlanetsViewModel) {
+        viewModel.goToSearch().observe(this, NonNullObserver { event ->
+            event.invoke { goToSearch() }
+        })
+
+        searchTv.setOnClickListener {
+            viewModel.searchClicked()
+        }
+    }
+
     private fun setErrorView(
             viewModel: PlanetsViewModel,
             show: Boolean,
@@ -98,11 +123,7 @@ class PlanetsActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToPlanetDetail(
-            planet: Planet,
-            planetImageIv: ImageView
-    ) {
-
+    private fun goToPlanetDetail(planet: Planet, planetImageIv: ImageView) {
         val imageTransitionName = ViewCompat.getTransitionName(planetImageIv)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,
@@ -113,5 +134,15 @@ class PlanetsActivity : AppCompatActivity() {
         Intent(this, PlanetDetailActivity::class.java)
                 .putExtra(Constants.PLANET, planet)
                 .run { startActivity(this, options.toBundle()) }
+    }
+
+    private fun goToFavourites() {
+        Intent(this, FavouritesActivity::class.java)
+                .run { startActivity(this) }
+    }
+
+    private fun goToSearch() {
+        Intent(this, SearchActivity::class.java)
+                .run { startActivity(this) }
     }
 }

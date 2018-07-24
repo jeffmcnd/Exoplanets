@@ -50,6 +50,7 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:$rootProject.archComponentsVersion"
     implementation "android.arch.persistence.room:runtime:$archComponentsVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     kapt "android.arch.persistence.room:compiler:$archComponentsVersion"
     testImplementation "android.arch.core:core-testing:$rootProject.archComponentsVersion"
     testImplementation "android.arch.persistence.room:testing:$archComponentsVersion"

@@ -10,6 +10,7 @@ import com.aidanlaing.exoplanets.common.extensions.defaultIfBlank
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
 import com.aidanlaing.exoplanets.common.glide.GlideApp
 import com.aidanlaing.exoplanets.data.planets.Planet
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_planet.view.*
 
@@ -17,11 +18,11 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(
             planet: Planet,
-            planetClickListener: (planetClicked: PlanetClicked) -> Unit
+            planetClickListener: (planetClick: PlanetClick) -> Unit
     ) = with(itemView) {
 
         layout.setOnClickListener {
-            planetClickListener(PlanetClicked(planet, planetImageIv))
+            planetClickListener(PlanetClick(planet, planetImageIv))
         }
 
         ViewCompat.setTransitionName(planetImageIv, planet.name)
@@ -29,14 +30,21 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         GlideApp.with(this)
                 .load(planetImage.resId)
                 .apply(RequestOptions.bitmapTransform(ColorTransformation(planetImage.color)))
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(planetImageIv)
 
         planetNameTv.text = planet.name
 
-        val distance = planet.getRoundedDistanceParsecs().defaultIfBlank(context.getString(R.string.unknown))
+        val distance = planet.getRoundedDistanceParsecs()
+                .defaultIfBlank(context.getString(R.string.unknown))
         planetDistanceTv.text = context.getString(
                 R.string.formatted_parsecs_away,
                 distance
+        )
+
+        planetPublishedDateTv.text = context.getString(
+                R.string.formatted_discovered_in,
+                planet.discoveryYear
         )
     }
 

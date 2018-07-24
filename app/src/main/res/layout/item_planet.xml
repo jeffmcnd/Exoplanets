@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/planetImageIv"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginBottom="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
@@ -24,6 +24,7 @@
         android:id="@+id/planetNameTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:ellipsize="end"
         android:maxLines="1"
@@ -39,14 +40,29 @@
         android:id="@+id/planetDistanceTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:theme="@style/NormalTextStyle"
+        app:layout_constraintBottom_toTopOf="@+id/planetPublishedDateTv"
+        app:layout_constraintLeft_toLeftOf="@+id/planetNameTv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
+        tools:text="123 parsecs away" />
+
+    <TextView
+        android:id="@+id/planetPublishedDateTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:theme="@style/NormalTextStyle"
         app:layout_constraintBottom_toBottomOf="@+id/planetImageIv"
         app:layout_constraintLeft_toLeftOf="@+id/planetNameTv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
-        tools:text="123 parsecs away" />
+        app:layout_constraintTop_toBottomOf="@+id/planetDistanceTv"
+        tools:text="2018-07-23" />
 
     <View
         android:layout_width="0dp"
