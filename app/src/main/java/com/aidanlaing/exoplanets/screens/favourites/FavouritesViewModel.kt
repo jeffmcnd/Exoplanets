@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClick
-import com.aidanlaing.exoplanets.common.livedata.SingleDataEvent
-import com.aidanlaing.exoplanets.common.livedata.SingleEvent
+import com.aidanlaing.exoplanets.common.events.SingleDataEvent
+import com.aidanlaing.exoplanets.common.events.SingleEvent
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource

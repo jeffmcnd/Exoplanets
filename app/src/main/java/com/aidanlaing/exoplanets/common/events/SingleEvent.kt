@@ -1,4 +1,4 @@
-package com.aidanlaing.exoplanets.common.livedata
+package com.aidanlaing.exoplanets.common.events
 
 class SingleEvent {
 
