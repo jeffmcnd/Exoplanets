@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClick
+import com.aidanlaing.exoplanets.common.livedata.SingleDataEvent
 import com.aidanlaing.exoplanets.common.livedata.SingleEvent
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
@@ -18,28 +19,26 @@ class FavouritesViewModel(
         private val planetsDataSource: PlanetsDataSource
 ) : ViewModel() {
 
-    private val backEvent = MutableLiveData<SingleEvent<Nothing>>()
-    private val planets = MutableLiveData<ArrayList<Planet>>()
+    private val backEvent = MutableLiveData<SingleEvent>()
+    private val favouritePlanets = MutableLiveData<ArrayList<Planet>>()
+    private val goToDetailEvent = MutableLiveData<SingleDataEvent<PlanetClick>>()
     private val showLoading = MutableLiveData<Boolean>()
     private val showGeneralError = MutableLiveData<Boolean>()
-    private val goToDetailEvent = MutableLiveData<SingleEvent<PlanetClick>>()
 
-    fun onBackEvent(): LiveData<SingleEvent<Nothing>> = backEvent
-
+    fun onBackEvent(): LiveData<SingleEvent> = backEvent
     fun backClicked() {
         backEvent.value = SingleEvent()
     }
 
-    fun getPlanets(): LiveData<ArrayList<Planet>> {
-        if (planets.value == null) loadPlanets()
-        return planets
+    fun getFavouritePlanets(): LiveData<ArrayList<Planet>> {
+        if (favouritePlanets.value == null) loadFavouritePlanets()
+        return favouritePlanets
     }
 
+    fun goToDetailEvent(): LiveData<SingleDataEvent<PlanetClick>> = goToDetailEvent
     fun planetClicked(planetClick: PlanetClick) {
-        goToDetailEvent.value = SingleEvent(planetClick)
+        goToDetailEvent.value = SingleDataEvent(planetClick)
     }
-
-    fun goToDetailEvent(): LiveData<SingleEvent<PlanetClick>> = goToDetailEvent
 
     fun showLoading(): LiveData<Boolean> {
         if (showLoading.value == null) showLoading.value = false
@@ -52,19 +51,22 @@ class FavouritesViewModel(
     }
 
     fun retryClicked() {
-        loadPlanets()
+        loadFavouritePlanets()
     }
 
-    private fun loadPlanets() = launch(uiContext) {
+    private fun loadFavouritePlanets() = launch(uiContext) {
         showLoading.value = true
         showGeneralError.value = false
 
-        val result = withContext(ioContext) {
+        val getFavouritePlanetsResult = withContext(ioContext) {
             planetsDataSource.getFavouritePlanets()
         }
 
-        when (result) {
-            is Result.Success -> planets.value = result.data.reversed().let { ArrayList(it) }
+        when (getFavouritePlanetsResult) {
+            is Result.Success -> favouritePlanets.value = getFavouritePlanetsResult
+                    .data.reversed()
+                    .let { ArrayList(it) }
+
             is Result.Failure -> showGeneralError.value = true
         }
 

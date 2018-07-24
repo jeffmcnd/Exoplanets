@@ -1,13 +1,14 @@
 package com.aidanlaing.exoplanets.common.livedata
 
-class SingleEvent {
+class SingleDataEvent<T>(private var data: T) {
 
     private var handled: Boolean = false
 
-    fun invokeIfNotHandled(body: () -> Unit) {
+    fun invokeIfNotHandled(body: (data: T) -> Unit) {
         if (!handled) {
-            body()
+            body(data)
             handled = true
         }
     }
+
 }

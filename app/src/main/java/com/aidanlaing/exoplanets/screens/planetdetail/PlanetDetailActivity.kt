@@ -75,7 +75,7 @@ class PlanetDetailActivity : AppCompatActivity() {
 
     private fun setUpBackListener(viewModel: PlanetDetailViewModel) {
         viewModel.onBackEvent().observe(this, NonNullObserver { event ->
-            event.invoke {
+            event.invokeIfNotHandled {
                 onBackPressed()
             }
         })
@@ -86,8 +86,8 @@ class PlanetDetailActivity : AppCompatActivity() {
     }
 
     private fun setUpFavouriteListener(viewModel: PlanetDetailViewModel, planet: Planet) {
-        viewModel.isFavourite(planet).observe(this, NonNullObserver { favourite ->
-            val resId = if (favourite) R.drawable.ic_heart_filled_white_24dp
+        viewModel.isFavourite(planet).observe(this, NonNullObserver { isFavourite ->
+            val resId = if (isFavourite) R.drawable.ic_heart_filled_white_24dp
             else R.drawable.ic_heart_outline_white_24dp
             favouriteIv.setImageResource(resId)
         })

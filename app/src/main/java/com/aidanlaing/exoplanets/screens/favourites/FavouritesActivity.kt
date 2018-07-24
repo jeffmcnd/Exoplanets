@@ -28,7 +28,7 @@ class FavouritesActivity : AppCompatActivity() {
                 .of(this, Injector.provideViewModelFactory(this))
                 .get(FavouritesViewModel::class.java)
 
-        setUpPlanets(viewModel)
+        setUpFavouritePlanets(viewModel)
         setUpBackListener(viewModel)
         setUpLoading(viewModel)
         setUpGeneralError(viewModel)
@@ -36,7 +36,7 @@ class FavouritesActivity : AppCompatActivity() {
 
     private fun setUpBackListener(viewModel: FavouritesViewModel) {
         viewModel.onBackEvent().observe(this, NonNullObserver { event ->
-            event.invoke {
+            event.invokeIfNotHandled {
                 onBackPressed()
             }
         })
@@ -46,7 +46,7 @@ class FavouritesActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpPlanets(viewModel: FavouritesViewModel) {
+    private fun setUpFavouritePlanets(viewModel: FavouritesViewModel) {
         val planetsAdapter = PlanetsAdapter({ planetClick ->
             layout.requestFocus()
             viewModel.planetClicked(planetClick)
@@ -55,15 +55,14 @@ class FavouritesActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
 
         viewModel.goToDetailEvent().observe(this, NonNullObserver { event ->
-            event.invokeWithData { data ->
+            event.invokeIfNotHandled { data ->
                 goToPlanetDetail(data.planet, data.planetImageView)
             }
         })
 
-        viewModel.getPlanets()
-                .observe(this, NonNullObserver { planets ->
-                    planetsAdapter.replaceItems(planets)
-                })
+        viewModel.getFavouritePlanets().observe(this, NonNullObserver { planets ->
+            planetsAdapter.replaceItems(planets)
+        })
 
         planetsRv.layoutManager = layoutManager
         planetsRv.adapter = planetsAdapter

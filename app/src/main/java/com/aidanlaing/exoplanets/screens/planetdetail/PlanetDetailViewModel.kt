@@ -17,11 +17,10 @@ class PlanetDetailViewModel(
         private val planetsDataSource: PlanetsDataSource
 ) : ViewModel() {
 
+    private val backEvent = MutableLiveData<SingleEvent>()
     private val isFavourite = MutableLiveData<Boolean>()
-    private val backEvent = MutableLiveData<SingleEvent<Nothing>>()
 
-    fun onBackEvent(): LiveData<SingleEvent<Nothing>> = backEvent
-
+    fun onBackEvent(): LiveData<SingleEvent> = backEvent
     fun backClicked() {
         backEvent.value = SingleEvent()
     }
@@ -40,23 +39,23 @@ class PlanetDetailViewModel(
     }
 
     private fun savePlanet(planet: Planet) = launch(uiContext) {
-        val favouritePlanetResult = withContext(ioContext) {
+        val savePlanetResult = withContext(ioContext) {
             planetsDataSource.savePlanet(planet)
         }
 
-        when (favouritePlanetResult) {
+        when (savePlanetResult) {
             is Result.Success -> isFavourite.value = planet.isFavourite
             is Result.Failure -> isFavourite.value = null
         }
     }
 
     private fun loadIsFavourite(planet: Planet) = launch(uiContext) {
-        val isFavouriteResult = withContext(ioContext) {
+        val isFavouritePlanetResult = withContext(ioContext) {
             planetsDataSource.isFavouritePlanet(planet.name)
         }
 
-        when (isFavouriteResult) {
-            is Result.Success -> isFavourite.value = isFavouriteResult.data
+        when (isFavouritePlanetResult) {
+            is Result.Success -> isFavourite.value = isFavouritePlanetResult.data
             is Result.Failure -> isFavourite.value = null
         }
     }
