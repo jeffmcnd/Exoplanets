@@ -2,8 +2,84 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".screens.favourites.FavouritesActivity">
+
+    <View
+        android:id="@+id/toolbarView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbarHeight"
+        android:theme="@style/ViewToolbarStyle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backIv"
+        android:layout_width="@dimen/toolbarHeight"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:padding="16dp"
+        android:src="@drawable/ic_arrow_back_white_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintLeft_toLeftOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favourites"
+        android:theme="@style/HeaderTwoTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintLeft_toRightOf="@+id/backIv"
+        app:layout_constraintRight_toLeftOf="@+id/refreshIv"
+        app:layout_constraintRight_toRightOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
+    <ImageView
+        android:id="@+id/refreshIv"
+        android:layout_width="@dimen/toolbarHeight"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:padding="16dp"
+        android:src="@drawable/ic_refresh_white_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintRight_toRightOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/planetsRv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarView" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarView"
+        tools:visibility="gone" />
+
+    <com.aidanlaing.exoplanets.common.views.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarView"
+        tools:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

@@ -4,14 +4,16 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClick
+import com.aidanlaing.exoplanets.common.events.SingleDataEvent
+import com.aidanlaing.exoplanets.common.events.SingleEvent
 import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
-import com.aidanlaing.exoplanets.common.livedata.SingleEvent
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.math.absoluteValue
 
 class PlanetsViewModel(
         private val uiContext: CoroutineContext,
@@ -20,26 +22,22 @@ class PlanetsViewModel(
 ) : ViewModel() {
 
     private val planets = MutableLiveData<ArrayList<Planet>>()
-    private val goToDetailEvent = MutableLiveData<SingleEvent<PlanetClick>>()
+    private val goToDetailEvent = MutableLiveData<SingleDataEvent<PlanetClick>>()
     private val showLoading = MutableLiveData<Boolean>()
     private val showNoConnection = MutableLiveData<Boolean>()
     private val showGeneralError = MutableLiveData<Boolean>()
-    private val goToFavourites = MutableLiveData<SingleEvent<Nothing>>()
-    private val goToSearch = MutableLiveData<SingleEvent<Nothing>>()
+    private val goToFavouritesEvent = MutableLiveData<SingleEvent>()
+    private val goToSearchEvent = MutableLiveData<SingleEvent>()
+    private val showActions = MutableLiveData<Boolean>()
 
     fun getPlanets(): LiveData<ArrayList<Planet>> {
         if (planets.value == null) loadPlanets()
         return planets
     }
 
+    fun goToDetailEvent(): LiveData<SingleDataEvent<PlanetClick>> = goToDetailEvent
     fun planetClicked(planetClick: PlanetClick) {
-        goToDetailEvent.value = SingleEvent(planetClick)
-    }
-
-    fun goToDetail(): LiveData<SingleEvent<PlanetClick>> = goToDetailEvent
-
-    fun retryClicked() {
-        loadPlanets()
+        goToDetailEvent.value = SingleDataEvent(planetClick)
     }
 
     fun showLoading(): LiveData<Boolean> {
@@ -57,35 +55,48 @@ class PlanetsViewModel(
         return showGeneralError
     }
 
+    fun retryClicked() {
+        loadPlanets()
+    }
+
+    fun goToFavouritesEvent(): LiveData<SingleEvent> = goToFavouritesEvent
     fun favouritesClicked() {
-        goToFavourites.value = SingleEvent()
+        goToFavouritesEvent.value = SingleEvent()
     }
 
-    fun goToFavourites(): LiveData<SingleEvent<Nothing>> = goToFavourites
-
+    fun goToSearchEvent(): LiveData<SingleEvent> = goToSearchEvent
     fun searchClicked() {
-        goToSearch.value = SingleEvent()
+        goToSearchEvent.value = SingleEvent()
     }
 
-    fun goToSearch(): LiveData<SingleEvent<Nothing>> = goToSearch
+    fun showActions(): LiveData<Boolean> {
+        if (showActions.value == null) showActions.value = true
+        return showActions
+    }
+
+    fun listScrolled(dy: Int) {
+        if (dy.absoluteValue < 10) return
+        val show = dy < 0
+        if (show != showActions.value) showActions.value = show
+    }
 
     private fun loadPlanets() = launch(uiContext) {
         showLoading.value = true
         showNoConnection.value = false
         showGeneralError.value = false
 
-        val result = withContext(ioContext) {
+        val getPlanetsResult = withContext(ioContext) {
             planetsDataSource.getPlanets()
         }
 
-        when (result) {
-            is Result.Success -> planets.value = result.data
+        when (getPlanetsResult) {
+            is Result.Success -> planets.value = getPlanetsResult.data
                     .sortedWith(Comparator { planetOne, planetTwo ->
                         planetOne.compareTo(planetTwo)
                     })
                     .mapTo(ArrayList()) { it }
 
-            is Result.Failure -> onError(result.error)
+            is Result.Failure -> onError(getPlanetsResult.error)
         }
 
         showLoading.value = false

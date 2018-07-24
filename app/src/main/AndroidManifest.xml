@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.planetdetail.PlanetDetailActivity" />
-        <activity android:name=".screens.search.SearchActivity" />
-        <activity android:name=".screens.favourites.FavouritesActivity"></activity>
+        <activity android:name=".screens.favourites.FavouritesActivity" />
+        <activity android:name=".screens.search.SearchActivity"></activity>
     </application>
 
 </manifest>
