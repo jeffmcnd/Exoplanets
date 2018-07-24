@@ -47,7 +47,6 @@ class PlanetsActivity : AppCompatActivity() {
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
         val planetsAdapter = PlanetsAdapter({ planetClick ->
-            layout.requestFocus()
             viewModel.planetClicked(planetClick)
         })
 
