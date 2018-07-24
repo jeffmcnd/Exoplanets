@@ -2,13 +2,14 @@ package com.aidanlaing.exoplanets.common
 
 import android.content.Context
 import com.aidanlaing.exoplanets.BuildConfig
+import com.aidanlaing.exoplanets.common.okhttp.ConnectivityInterceptor
 import com.aidanlaing.exoplanets.data.AppDatabase
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.ConfirmedPlanetsRepo
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsDao
-import com.aidanlaing.exoplanets.data.confirmedplanets.local.ConfirmedPlanetsLocalDataSource
-import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsApi
-import com.aidanlaing.exoplanets.data.confirmedplanets.remote.ConfirmedPlanetsRemoteDataSource
+import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
+import com.aidanlaing.exoplanets.data.planets.PlanetsRepo
+import com.aidanlaing.exoplanets.data.planets.local.PlanetsDao
+import com.aidanlaing.exoplanets.data.planets.local.PlanetsLocalDataSource
+import com.aidanlaing.exoplanets.data.planets.remote.PlanetsApi
+import com.aidanlaing.exoplanets.data.planets.remote.PlanetsRemoteDataSource
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
@@ -28,16 +29,17 @@ object Injector {
             context: Context,
             uiContext: CoroutineContext = UI,
             ioContext: CoroutineContext = CommonPool,
-            confirmedPlanetsDataSource: ConfirmedPlanetsDataSource = provideConfirmedPlanetsRepo(context)
+            planetsDataSource: PlanetsDataSource = providePlanetsRepo(context)
     ) = ViewModelFactory(
             uiContext,
             ioContext,
-            confirmedPlanetsDataSource
+            planetsDataSource
     )
 
     fun provideRetrofit(
+            context: Context,
             baseUrl: String = BuildConfig.EXOPLANET_BASE_URL,
-            okHttpClient: OkHttpClient = provideOkHttpClient(),
+            okHttpClient: OkHttpClient = provideOkHttpClient(context),
             converterFactory: Converter.Factory = GsonConverterFactory.create(),
             callAdapterFactory: CallAdapter.Factory = CoroutineCallAdapterFactory.invoke()
     ): Retrofit = cachedRetrofits[baseUrl] ?: Retrofit.Builder()
@@ -48,28 +50,40 @@ object Injector {
             .build()
             .also { retrofit -> cachedRetrofits[baseUrl] = retrofit }
 
-    fun provideOkHttpClient(): OkHttpClient = cachedOkHttpClient ?: OkHttpClient.Builder()
+    fun provideOkHttpClient(
+            context: Context,
+            connectivityInterceptor: ConnectivityInterceptor = provideConnectivityInterceptor(context)
+    ): OkHttpClient = cachedOkHttpClient ?: OkHttpClient.Builder()
+            .addInterceptor(connectivityInterceptor)
             .build()
             .also { okHttpClient -> cachedOkHttpClient = okHttpClient }
 
-    fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.getInstance(context)
+    fun provideConnectivityInterceptor(
+            context: Context
+    ): ConnectivityInterceptor = ConnectivityInterceptor(context)
 
-    fun provideConfirmedPlanetsRepo(
+    fun provideAppDatabase(
             context: Context,
-            confirmedPlanetsApi: ConfirmedPlanetsApi = provideConfirmedPlanetsApi(),
-            confirmedPlanetsDao: ConfirmedPlanetsDao = provideConfirmedPlanetsDao(context)
-    ): ConfirmedPlanetsRepo = ConfirmedPlanetsRepo.getInstance(
-            ConfirmedPlanetsRemoteDataSource.getInstance(confirmedPlanetsApi),
-            ConfirmedPlanetsLocalDataSource.getInstance(confirmedPlanetsDao)
+            name: String = "app.db"
+    ): AppDatabase = AppDatabase.getInstance(context, name)
+
+    fun providePlanetsRepo(
+            context: Context,
+            planetsApi: PlanetsApi = providePlanetsApi(context),
+            planetsDao: PlanetsDao = providePlanetsDao(context)
+    ): PlanetsRepo = PlanetsRepo.getInstance(
+            PlanetsRemoteDataSource.getInstance(planetsApi),
+            PlanetsLocalDataSource.getInstance(planetsDao)
     )
 
-    fun provideConfirmedPlanetsApi(
-            retrofit: Retrofit = provideRetrofit()
-    ): ConfirmedPlanetsApi = retrofit.create(ConfirmedPlanetsApi::class.java)
+    fun providePlanetsApi(
+            context: Context,
+            retrofit: Retrofit = provideRetrofit(context)
+    ): PlanetsApi = retrofit.create(PlanetsApi::class.java)
 
-    fun provideConfirmedPlanetsDao(
+    fun providePlanetsDao(
             context: Context,
             appDatabase: AppDatabase = provideAppDatabase(context)
-    ): ConfirmedPlanetsDao = appDatabase.confirmedPlanetsDao()
+    ): PlanetsDao = appDatabase.planetsDao()
 
 }

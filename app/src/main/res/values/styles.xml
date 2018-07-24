@@ -9,6 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowContentTransitions">true</item>
 
     </style>
 
@@ -19,13 +20,14 @@
 
     <style name="HeaderOneTextStyle">
         <item name="android:textColor">@color/textHeader</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="HeaderTwoTextStyle">
         <item name="android:textColor">@color/textHeader</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextViewButtonStyle">
@@ -33,10 +35,29 @@
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingStart">48dp</item>
         <item name="android:paddingEnd">48dp</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@drawable/shape_rect_solid_primary_rounded_16dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DividerViewStyle">
+        <item name="android:background">@color/windowBackgroundLight</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
+    <style name="ViewToolbarStyle">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextViewActionButtonStyle">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/textHeader</item>
         <item name="android:textStyle">bold</item>
     </style>
 

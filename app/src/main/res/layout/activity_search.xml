@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.search.SearchActivity">
+
+    <View
+        android:id="@+id/toolbarView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbarHeight"
+        android:theme="@style/ViewToolbarStyle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backIv"
+        android:layout_width="@dimen/toolbarHeight"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:padding="16dp"
+        android:src="@drawable/ic_arrow_back_white_24dp"
+        app:layout_constraintLeft_toLeftOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"/>
+
+    <EditText
+        android:id="@+id/searchEt"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="@null"
+        android:hint="@string/search_planets"
+        android:inputType="text"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:textColor="@color/textHeader"
+        android:textColorHint="@color/textNormal"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintLeft_toRightOf="@+id/backIv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/planetsRv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchEt" />
+
+</android.support.constraint.ConstraintLayout>

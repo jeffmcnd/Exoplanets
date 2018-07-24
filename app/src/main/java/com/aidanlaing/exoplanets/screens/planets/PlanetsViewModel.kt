@@ -1,0 +1,101 @@
+package com.aidanlaing.exoplanets.screens.planets
+
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClick
+import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
+import com.aidanlaing.exoplanets.common.livedata.SingleEvent
+import com.aidanlaing.exoplanets.data.Result
+import com.aidanlaing.exoplanets.data.planets.Planet
+import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
+import kotlin.coroutines.experimental.CoroutineContext
+
+class PlanetsViewModel(
+        private val uiContext: CoroutineContext,
+        private val ioContext: CoroutineContext,
+        private val planetsDataSource: PlanetsDataSource
+) : ViewModel() {
+
+    private val planets = MutableLiveData<ArrayList<Planet>>()
+    private val goToDetailEvent = MutableLiveData<SingleEvent<PlanetClick>>()
+    private val showLoading = MutableLiveData<Boolean>()
+    private val showNoConnection = MutableLiveData<Boolean>()
+    private val showGeneralError = MutableLiveData<Boolean>()
+    private val goToFavourites = MutableLiveData<SingleEvent<Nothing>>()
+    private val goToSearch = MutableLiveData<SingleEvent<Nothing>>()
+
+    fun getPlanets(): LiveData<ArrayList<Planet>> {
+        if (planets.value == null) loadPlanets()
+        return planets
+    }
+
+    fun planetClicked(planetClick: PlanetClick) {
+        goToDetailEvent.value = SingleEvent(planetClick)
+    }
+
+    fun goToDetail(): LiveData<SingleEvent<PlanetClick>> = goToDetailEvent
+
+    fun retryClicked() {
+        loadPlanets()
+    }
+
+    fun showLoading(): LiveData<Boolean> {
+        if (showLoading.value == null) showLoading.value = false
+        return showLoading
+    }
+
+    fun showNoConnection(): LiveData<Boolean> {
+        if (showNoConnection.value == null) showNoConnection.value = false
+        return showNoConnection
+    }
+
+    fun showGeneralError(): LiveData<Boolean> {
+        if (showGeneralError.value == null) showGeneralError.value = false
+        return showGeneralError
+    }
+
+    fun favouritesClicked() {
+        goToFavourites.value = SingleEvent()
+    }
+
+    fun goToFavourites(): LiveData<SingleEvent<Nothing>> = goToFavourites
+
+    fun searchClicked() {
+        goToSearch.value = SingleEvent()
+    }
+
+    fun goToSearch(): LiveData<SingleEvent<Nothing>> = goToSearch
+
+    private fun loadPlanets() = launch(uiContext) {
+        showLoading.value = true
+        showNoConnection.value = false
+        showGeneralError.value = false
+
+        val result = withContext(ioContext) {
+            planetsDataSource.getPlanets()
+        }
+
+        when (result) {
+            is Result.Success -> planets.value = result.data
+                    .sortedWith(Comparator { planetOne, planetTwo ->
+                        planetOne.compareTo(planetTwo)
+                    })
+                    .mapTo(ArrayList()) { it }
+
+            is Result.Failure -> onError(result.error)
+        }
+
+        showLoading.value = false
+    }
+
+    private fun onError(exception: Exception) {
+        when (exception) {
+            is NoConnectionException -> showNoConnection.value = true
+            else -> showGeneralError.value = true
+        }
+    }
+
+}

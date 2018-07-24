@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context=".screens.planetdetail.PlanetDetailActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/gradientView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/gradient_primary_to_transparent"
+                app:layout_constraintBottom_toBottomOf="@+id/planetImageCenterView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/planetImageCenterView"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/planetImageIv"
+                app:layout_constraintLeft_toLeftOf="@+id/planetImageIv"
+                app:layout_constraintRight_toRightOf="@+id/planetImageIv"
+                app:layout_constraintTop_toTopOf="@+id/planetImageIv" />
+
+            <ImageView
+                android:id="@+id/backIv"
+                android:layout_width="@dimen/toolbarHeight"
+                android:layout_height="@dimen/toolbarHeight"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:padding="16dp"
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/favouriteIv"
+                android:layout_width="@dimen/toolbarHeight"
+                android:layout_height="@dimen/toolbarHeight"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/favourite"
+                android:padding="16dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_heart_outline_white_24dp" />
+
+            <ImageView
+                android:id="@+id/planetImageIv"
+                android:layout_width="204dp"
+                android:layout_height="204dp"
+                android:layout_marginTop="32dp"
+                android:contentDescription="@null"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/backIv"
+                tools:src="@drawable/ic_planet_1" />
+
+            <TextView
+                android:id="@+id/planetNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:theme="@style/HeaderOneTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetImageIv"
+                tools:text="HD 142022 A b" />
+
+            <TextView
+                android:id="@+id/planetDistanceTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:gravity="center"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
+                tools:text="123 parsecs away" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

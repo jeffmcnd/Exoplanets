@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/planetImageIv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_planet_1" />
+
+    <TextView
+        android:id="@+id/planetNameTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:theme="@style/HeaderTwoTextStyle"
+        app:layout_constraintBottom_toTopOf="@+id/planetDistanceTv"
+        app:layout_constraintLeft_toRightOf="@+id/planetImageIv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/planetImageIv"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="HD 142022 A b" />
+
+    <TextView
+        android:id="@+id/planetDistanceTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:theme="@style/NormalTextStyle"
+        app:layout_constraintBottom_toTopOf="@+id/planetPublishedDateTv"
+        app:layout_constraintLeft_toLeftOf="@+id/planetNameTv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
+        tools:text="123 parsecs away" />
+
+    <TextView
+        android:id="@+id/planetPublishedDateTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:theme="@style/NormalTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/planetImageIv"
+        app:layout_constraintLeft_toLeftOf="@+id/planetNameTv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/planetDistanceTv"
+        tools:text="2018-07-23" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:theme="@style/DividerViewStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
