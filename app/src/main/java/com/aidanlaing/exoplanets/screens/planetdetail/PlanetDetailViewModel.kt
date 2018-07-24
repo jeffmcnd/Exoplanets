@@ -20,7 +20,7 @@ class PlanetDetailViewModel(
     private val isFavourite = MutableLiveData<Boolean>()
     private val backEvent = MutableLiveData<SingleEvent<Nothing>>()
 
-    fun onBack(): LiveData<SingleEvent<Nothing>> = backEvent
+    fun onBackEvent(): LiveData<SingleEvent<Nothing>> = backEvent
 
     fun backClicked() {
         backEvent.value = SingleEvent()

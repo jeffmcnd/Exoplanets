@@ -46,7 +46,7 @@ class PlanetsActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
 
-        viewModel.goToDetail().observe(this, NonNullObserver { event ->
+        viewModel.goToDetailEvent().observe(this, NonNullObserver { event ->
             event.invokeWithData { data ->
                 goToPlanetDetail(data.planet, data.planetImageView)
             }
@@ -85,7 +85,7 @@ class PlanetsActivity : AppCompatActivity() {
     }
 
     private fun setUpFavouritesListener(viewModel: PlanetsViewModel) {
-        viewModel.goToFavourites().observe(this, NonNullObserver { event ->
+        viewModel.goToFavouritesEvent().observe(this, NonNullObserver { event ->
             event.invoke { goToFavourites() }
         })
 
@@ -95,7 +95,7 @@ class PlanetsActivity : AppCompatActivity() {
     }
 
     private fun setUpSearchListener(viewModel: PlanetsViewModel) {
-        viewModel.goToSearch().observe(this, NonNullObserver { event ->
+        viewModel.goToSearchEvent().observe(this, NonNullObserver { event ->
             event.invoke { goToSearch() }
         })
 

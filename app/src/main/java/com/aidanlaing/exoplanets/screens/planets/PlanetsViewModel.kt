@@ -20,12 +20,12 @@ class PlanetsViewModel(
 ) : ViewModel() {
 
     private val planets = MutableLiveData<ArrayList<Planet>>()
-    private val goToDetailEvent = MutableLiveData<SingleEvent<PlanetClick>>()
     private val showLoading = MutableLiveData<Boolean>()
     private val showNoConnection = MutableLiveData<Boolean>()
     private val showGeneralError = MutableLiveData<Boolean>()
-    private val goToFavourites = MutableLiveData<SingleEvent<Nothing>>()
-    private val goToSearch = MutableLiveData<SingleEvent<Nothing>>()
+    private val goToDetailEvent = MutableLiveData<SingleEvent<PlanetClick>>()
+    private val goToFavouritesEvent = MutableLiveData<SingleEvent<Nothing>>()
+    private val goToSearchEvent = MutableLiveData<SingleEvent<Nothing>>()
 
     fun getPlanets(): LiveData<ArrayList<Planet>> {
         if (planets.value == null) loadPlanets()
@@ -36,11 +36,7 @@ class PlanetsViewModel(
         goToDetailEvent.value = SingleEvent(planetClick)
     }
 
-    fun goToDetail(): LiveData<SingleEvent<PlanetClick>> = goToDetailEvent
-
-    fun retryClicked() {
-        loadPlanets()
-    }
+    fun goToDetailEvent(): LiveData<SingleEvent<PlanetClick>> = goToDetailEvent
 
     fun showLoading(): LiveData<Boolean> {
         if (showLoading.value == null) showLoading.value = false
@@ -57,17 +53,21 @@ class PlanetsViewModel(
         return showGeneralError
     }
 
-    fun favouritesClicked() {
-        goToFavourites.value = SingleEvent()
+    fun retryClicked() {
+        loadPlanets()
     }
 
-    fun goToFavourites(): LiveData<SingleEvent<Nothing>> = goToFavourites
+    fun favouritesClicked() {
+        goToFavouritesEvent.value = SingleEvent()
+    }
+
+    fun goToFavouritesEvent(): LiveData<SingleEvent<Nothing>> = goToFavouritesEvent
 
     fun searchClicked() {
-        goToSearch.value = SingleEvent()
+        goToSearchEvent.value = SingleEvent()
     }
 
-    fun goToSearch(): LiveData<SingleEvent<Nothing>> = goToSearch
+    fun goToSearchEvent(): LiveData<SingleEvent<Nothing>> = goToSearchEvent
 
     private fun loadPlanets() = launch(uiContext) {
         showLoading.value = true

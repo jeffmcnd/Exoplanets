@@ -74,7 +74,7 @@ class PlanetDetailActivity : AppCompatActivity() {
     }
 
     private fun setUpBackListener(viewModel: PlanetDetailViewModel) {
-        viewModel.onBack().observe(this, NonNullObserver { event ->
+        viewModel.onBackEvent().observe(this, NonNullObserver { event ->
             event.invoke {
                 onBackPressed()
             }
