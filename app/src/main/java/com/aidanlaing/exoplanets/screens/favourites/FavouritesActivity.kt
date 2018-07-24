@@ -28,8 +28,9 @@ class FavouritesActivity : AppCompatActivity() {
                 .of(this, Injector.provideViewModelFactory(this))
                 .get(FavouritesViewModel::class.java)
 
-        setUpFavouritePlanets(viewModel)
         setUpBackListener(viewModel)
+        setUpRefreshListener(viewModel)
+        setUpFavouritePlanets(viewModel)
         setUpLoading(viewModel)
         setUpGeneralError(viewModel)
     }
@@ -46,9 +47,14 @@ class FavouritesActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpRefreshListener(viewModel: FavouritesViewModel) {
+        refreshIv.setOnClickListener {
+            viewModel.refreshClicked()
+        }
+    }
+
     private fun setUpFavouritePlanets(viewModel: FavouritesViewModel) {
         val planetsAdapter = PlanetsAdapter({ planetClick ->
-            layout.requestFocus()
             viewModel.planetClicked(planetClick)
         })
 

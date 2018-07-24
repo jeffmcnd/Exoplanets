@@ -3,16 +3,22 @@ package com.aidanlaing.exoplanets.screens.planets
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.ConstraintSet
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetsAdapter
+import com.aidanlaing.exoplanets.common.extensions.dpToPx
 import com.aidanlaing.exoplanets.common.livedata.NonNullObserver
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.screens.favourites.FavouritesActivity
@@ -36,6 +42,7 @@ class PlanetsActivity : AppCompatActivity() {
         setUpGeneralError(viewModel)
         setUpFavouritesListener(viewModel)
         setUpSearchListener(viewModel)
+        setUpShowActions(viewModel)
     }
 
     private fun setUpPlanets(viewModel: PlanetsViewModel) {
@@ -52,13 +59,19 @@ class PlanetsActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.getPlanets()
-                .observe(this, NonNullObserver { planets ->
-                    planetsAdapter.replaceItems(planets)
-                })
+        viewModel.getPlanets().observe(this, NonNullObserver { planets ->
+            planetsAdapter.replaceItems(planets)
+        })
 
         planetsRv.layoutManager = layoutManager
         planetsRv.adapter = planetsAdapter
+
+        planetsRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.listScrolled(dy)
+            }
+        })
     }
 
     private fun setUpLoading(viewModel: PlanetsViewModel) {
@@ -89,7 +102,7 @@ class PlanetsActivity : AppCompatActivity() {
             event.invokeIfNotHandled { goToFavourites() }
         })
 
-        favouritesTv.setOnClickListener {
+        favouritesCv.setOnClickListener {
             viewModel.favouritesClicked()
         }
     }
@@ -99,9 +112,60 @@ class PlanetsActivity : AppCompatActivity() {
             event.invokeIfNotHandled { goToSearch() }
         })
 
-        searchTv.setOnClickListener {
+        searchCv.setOnClickListener {
             viewModel.searchClicked()
         }
+    }
+
+    private fun setUpShowActions(viewModel: PlanetsViewModel) {
+        viewModel.showActions().observe(this, NonNullObserver { show ->
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(layout)
+
+            if (show) {
+                val margin = 16.dpToPx
+
+                constraintSet.clear(R.id.searchCv, ConstraintSet.BOTTOM)
+                constraintSet.connect(
+                        R.id.searchCv,
+                        ConstraintSet.TOP,
+                        ConstraintSet.PARENT_ID,
+                        ConstraintSet.TOP
+                )
+                constraintSet.setMargin(R.id.searchCv, ConstraintSet.TOP, margin)
+
+                constraintSet.clear(R.id.favouritesCv, ConstraintSet.TOP)
+                constraintSet.connect(
+                        R.id.favouritesCv,
+                        ConstraintSet.BOTTOM,
+                        ConstraintSet.PARENT_ID,
+                        ConstraintSet.BOTTOM
+                )
+                constraintSet.setMargin(R.id.favouritesCv, ConstraintSet.BOTTOM, margin)
+            } else {
+                constraintSet.clear(R.id.searchCv, ConstraintSet.TOP)
+                constraintSet.connect(
+                        R.id.searchCv,
+                        ConstraintSet.BOTTOM,
+                        ConstraintSet.PARENT_ID,
+                        ConstraintSet.TOP
+                )
+
+                constraintSet.clear(R.id.favouritesCv, ConstraintSet.BOTTOM)
+                constraintSet.connect(
+                        R.id.favouritesCv,
+                        ConstraintSet.TOP,
+                        ConstraintSet.PARENT_ID,
+                        ConstraintSet.BOTTOM
+                )
+            }
+
+            val transition = ChangeBounds()
+            transition.interpolator = LinearInterpolator()
+            transition.duration = 200
+            TransitionManager.beginDelayedTransition(layout, transition)
+            constraintSet.applyTo(layout)
+        })
     }
 
     private fun setErrorView(
@@ -110,7 +174,6 @@ class PlanetsActivity : AppCompatActivity() {
             titleText: String,
             infoText: String
     ) {
-
         if (show) {
             errorView.visibility = View.VISIBLE
             errorView.setTitleText(titleText)

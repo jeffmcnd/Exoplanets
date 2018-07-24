@@ -28,6 +28,30 @@
         app:layout_constraintLeft_toLeftOf="@+id/toolbarView"
         app:layout_constraintTop_toTopOf="@+id/toolbarView" />
 
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favourites"
+        android:theme="@style/HeaderTwoTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintLeft_toRightOf="@+id/backIv"
+        app:layout_constraintRight_toLeftOf="@+id/refreshIv"
+        app:layout_constraintRight_toRightOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
+    <ImageView
+        android:id="@+id/refreshIv"
+        android:layout_width="@dimen/toolbarHeight"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back"
+        android:padding="16dp"
+        android:src="@drawable/ic_refresh_white_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarView"
+        app:layout_constraintRight_toRightOf="@+id/toolbarView"
+        app:layout_constraintTop_toTopOf="@+id/toolbarView" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/planetsRv"
         android:layout_width="0dp"

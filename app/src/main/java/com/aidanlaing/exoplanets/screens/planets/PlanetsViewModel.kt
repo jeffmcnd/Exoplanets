@@ -4,15 +4,16 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.aidanlaing.exoplanets.common.adapters.planets.PlanetClick
-import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
 import com.aidanlaing.exoplanets.common.events.SingleDataEvent
 import com.aidanlaing.exoplanets.common.events.SingleEvent
+import com.aidanlaing.exoplanets.common.exceptions.NoConnectionException
 import com.aidanlaing.exoplanets.data.Result
 import com.aidanlaing.exoplanets.data.planets.Planet
 import com.aidanlaing.exoplanets.data.planets.PlanetsDataSource
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.math.absoluteValue
 
 class PlanetsViewModel(
         private val uiContext: CoroutineContext,
@@ -27,6 +28,7 @@ class PlanetsViewModel(
     private val showGeneralError = MutableLiveData<Boolean>()
     private val goToFavouritesEvent = MutableLiveData<SingleEvent>()
     private val goToSearchEvent = MutableLiveData<SingleEvent>()
+    private val showActions = MutableLiveData<Boolean>()
 
     fun getPlanets(): LiveData<ArrayList<Planet>> {
         if (planets.value == null) loadPlanets()
@@ -65,6 +67,17 @@ class PlanetsViewModel(
     fun goToSearchEvent(): LiveData<SingleEvent> = goToSearchEvent
     fun searchClicked() {
         goToSearchEvent.value = SingleEvent()
+    }
+
+    fun showActions(): LiveData<Boolean> {
+        if (showActions.value == null) showActions.value = true
+        return showActions
+    }
+
+    fun listScrolled(dy: Int) {
+        if (dy.absoluteValue < 10) return
+        val show = dy < 0
+        if (show != showActions.value) showActions.value = show
     }
 
     private fun loadPlanets() = launch(uiContext) {

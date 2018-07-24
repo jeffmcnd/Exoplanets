@@ -30,6 +30,10 @@ class FavouritesViewModel(
         backEvent.value = SingleEvent()
     }
 
+    fun refreshClicked() {
+        loadFavouritePlanets()
+    }
+
     fun getFavouritePlanets(): LiveData<ArrayList<Planet>> {
         if (favouritePlanets.value == null) loadFavouritePlanets()
         return favouritePlanets
