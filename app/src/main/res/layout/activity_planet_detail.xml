@@ -11,12 +11,14 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
+            android:paddingBottom="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -65,7 +67,7 @@
                 android:id="@+id/planetImageIv"
                 android:layout_width="204dp"
                 android:layout_height="204dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@null"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -78,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:theme="@style/HeaderOneTextStyle"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -87,17 +89,415 @@
                 tools:text="HD 142022 A b" />
 
             <TextView
-                android:id="@+id/planetDistanceTv"
+                android:id="@+id/planetDistanceValueTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:gravity="center"
                 android:theme="@style/NormalTextStyle"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/planetNameTv"
                 tools:text="123 parsecs away" />
+
+            <TextView
+                android:id="@+id/planetDetailsTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/planet_details"
+                android:theme="@style/HeaderTwoTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDistanceValueTv" />
+
+            <TextView
+                android:id="@+id/planetDiscoveryYearTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/discovery_year"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDetailsTv" />
+
+            <TextView
+                android:id="@+id/planetDiscoveryYearValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetDiscoveryYearTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetDiscoveryYearTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="2018" />
+
+            <View
+                android:id="@+id/planetDiscoveryYearDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDiscoveryYearTv" />
+
+            <TextView
+                android:id="@+id/planetDiscoveryMethodTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/discovery_method"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDiscoveryYearDividerView" />
+
+            <TextView
+                android:id="@+id/planetDiscoveryMethodValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetDiscoveryMethodTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetDiscoveryMethodTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Radial Velocity" />
+
+            <View
+                android:id="@+id/planetDiscoveryMethodDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDiscoveryMethodTv" />
+
+            <TextView
+                android:id="@+id/planetRadiusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/radius"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDiscoveryMethodDividerView" />
+
+            <TextView
+                android:id="@+id/planetRadiusValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetRadiusTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetRadiusTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="5.4x Jupiter" />
+
+            <View
+                android:id="@+id/planetRadiusDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetRadiusTv" />
+
+            <TextView
+                android:id="@+id/planetMassTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/mass"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetRadiusDividerView" />
+
+            <TextView
+                android:id="@+id/planetMassValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetMassTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetMassTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="1.2x Jupiter" />
+
+            <View
+                android:id="@+id/planetMassDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetMassTv" />
+
+            <TextView
+                android:id="@+id/planetDensityTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/density"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetMassDividerView" />
+
+            <TextView
+                android:id="@+id/planetDensityValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetDensityTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetDensityTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="22.4 days" />
+
+            <View
+                android:id="@+id/planetDensityDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDensityTv" />
+
+            <TextView
+                android:id="@+id/planetOrbitalPeriodTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/orbital_period"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetDensityDividerView" />
+
+            <TextView
+                android:id="@+id/planetOrbitalPeriodValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/planetOrbitalPeriodTv"
+                app:layout_constraintLeft_toRightOf="@+id/planetOrbitalPeriodTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="22.4 days" />
+
+            <TextView
+                android:id="@+id/starDetailsTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="48dp"
+                android:text="@string/star_details"
+                android:theme="@style/HeaderTwoTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/planetOrbitalPeriodTv" />
+
+            <TextView
+                android:id="@+id/starNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/name"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starDetailsTv" />
+
+            <TextView
+                android:id="@+id/starNameValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/starNameTv"
+                app:layout_constraintLeft_toRightOf="@+id/starNameTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="HD 142022" />
+
+            <View
+                android:id="@+id/starNameDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starNameTv" />
+
+            <TextView
+                android:id="@+id/starTempTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/temperature"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starNameDividerView" />
+
+            <TextView
+                android:id="@+id/starTempValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/starTempTv"
+                app:layout_constraintLeft_toRightOf="@+id/starTempTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="1234 Kelvin" />
+
+            <View
+                android:id="@+id/starTempDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starTempTv" />
+
+            <TextView
+                android:id="@+id/starRadiusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/radius"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starTempDividerView" />
+
+            <TextView
+                android:id="@+id/starRadiusValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/starRadiusTv"
+                app:layout_constraintLeft_toRightOf="@+id/starRadiusTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="2x Sun" />
+
+            <View
+                android:id="@+id/starRadiusDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starRadiusTv" />
+
+            <TextView
+                android:id="@+id/starMassTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/mass"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starRadiusDividerView" />
+
+            <TextView
+                android:id="@+id/starMassValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/starMassTv"
+                app:layout_constraintLeft_toRightOf="@+id/starMassTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="4x Sun" />
+
+            <View
+                android:id="@+id/starMassDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/DividerViewStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starMassTv" />
+
+            <TextView
+                android:id="@+id/starNumberOfPlanetsTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/number_of_planets"
+                android:theme="@style/HeaderThreeTextStyle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/starMassDividerView" />
+
+            <TextView
+                android:id="@+id/starNumberOfPlanetsValueTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="end"
+                android:theme="@style/NormalTextStyle"
+                app:layout_constraintBaseline_toBaselineOf="@+id/starNumberOfPlanetsTv"
+                app:layout_constraintLeft_toRightOf="@+id/starNumberOfPlanetsTv"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="12" />
 
         </android.support.constraint.ConstraintLayout>
 

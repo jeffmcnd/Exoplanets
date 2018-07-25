@@ -9,18 +9,17 @@ import com.google.gson.annotations.SerializedName
 data class PlanetRemote(
         @SerializedName("pl_name") val name: String?,
         @SerializedName("pl_disc") val discoveryYear: String?,
-        @SerializedName("pl_letter") val letter: String?,
         @SerializedName("pl_discmethod") val discoveryMethod: String?,
-        @SerializedName("pl_pnum") val numPlanetsInSystem: Int?,
-        @SerializedName("pl_orbper") val orbitalPeriodDays: Double?,
-        @SerializedName("pl_bmassj") val jupiterMass: Double?,
         @SerializedName("pl_radj") val jupiterRadius: Double?,
+        @SerializedName("pl_bmassj") val jupiterMass: Double?,
         @SerializedName("pl_dens") val density: Double?,
+        @SerializedName("pl_orbper") val orbitalPeriodDays: Double?,
         @SerializedName("pl_hostname") val starName: String?,
         @SerializedName("st_dist") val starDistanceParsecs: Double?,
         @SerializedName("st_teff") val starTemperatureKelvin: Double?,
+        @SerializedName("st_rad") val starSunRadius: Double?,
         @SerializedName("st_mass") val starSunMass: Double?,
-        @SerializedName("st_rad") val starSunRadius: Double?
+        @SerializedName("pl_pnum") val numPlanetsInSystem: Int?
 ) : Mappable<Planet> {
 
     override fun mapToResult(): Result<Planet> {
@@ -34,19 +33,18 @@ data class PlanetRemote(
         val planet = Planet(
                 name,
                 discoveryYear,
-                false,
-                letter,
                 discoveryMethod,
-                numPlanetsInSystem,
-                orbitalPeriodDays,
-                jupiterMass,
                 jupiterRadius,
+                jupiterMass,
                 density,
+                orbitalPeriodDays,
                 starName,
                 starDistanceParsecs,
                 starTemperatureKelvin,
+                starSunRadius,
                 starSunMass,
-                starSunRadius
+                numPlanetsInSystem,
+                false
         )
 
         return Result.Success(planet)

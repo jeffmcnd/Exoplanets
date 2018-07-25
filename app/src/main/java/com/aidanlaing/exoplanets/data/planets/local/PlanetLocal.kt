@@ -11,38 +11,36 @@ data class PlanetLocal(
         @PrimaryKey
         val name: String,
         val discoveryYear: String,
-        val isFavourite: Boolean,
-        val letter: String?,
         val discoveryMethod: String?,
-        val numPlanetsInSystem: Int?,
-        val orbitalPeriodDays: Double?,
-        val jupiterMass: Double?,
         val jupiterRadius: Double?,
+        val jupiterMass: Double?,
         val density: Double?,
+        val orbitalPeriodDays: Double?,
         val starName: String?,
         val starDistanceParsecs: Double?,
         val starTemperatureKelvin: Double?,
+        val starSunRadius: Double?,
         val starSunMass: Double?,
-        val starSunRadius: Double?
+        val numPlanetsInSystem: Int?,
+        var isFavourite: Boolean
 ) : Mappable<Planet> {
 
     override fun mapToResult(): Result<Planet> {
         val planet = Planet(
                 name,
                 discoveryYear,
-                isFavourite,
-                letter,
                 discoveryMethod,
-                numPlanetsInSystem,
-                orbitalPeriodDays,
-                jupiterMass,
                 jupiterRadius,
+                jupiterMass,
                 density,
+                orbitalPeriodDays,
                 starName,
                 starDistanceParsecs,
                 starTemperatureKelvin,
+                starSunRadius,
                 starSunMass,
-                starSunRadius
+                numPlanetsInSystem,
+                isFavourite
         )
 
         return Result.Success(planet)
