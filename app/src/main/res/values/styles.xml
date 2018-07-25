@@ -30,6 +30,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="HeaderThreeTextStyle">
+        <item name="android:textColor">@color/textHeader</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="TextViewButtonStyle">
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>

@@ -7,6 +7,10 @@
 
     <string name="formatted_parsecs_away">%1$s parsecs away</string>
     <string name="formatted_discovered_in">Discovered in %1$s</string>
+    <string name="formatted_times_jupiter">%1$sx Jupiter</string>
+    <string name="formatted_days">%1$s days</string>
+    <string name="formatted_g_per_cm_cubed">%1$s g/cm³</string>
+    <string name="formatted_kelvin">%1$s kelvin</string>
 
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="no_internet_connection_info">Try reconnecting to Wi-Fi or mobile data.</string>
@@ -18,5 +22,19 @@
     <string name="favourites">Favourites</string>
     <string name="search_planets">Search planets…</string>
     <string name="search">Search</string>
+    <string name="details">Details</string>
+    <string name="distance">Distance</string>
+    <string name="discovery_year">Discovery year</string>
+    <string name="discovery_method">Discovery method</string>
+    <string name="planet_details">Planet Details</string>
+    <string name="radius">Radius</string>
+    <string name="mass">Mass</string>
+    <string name="orbital_period">Orbital period</string>
+    <string name="density">Density</string>
+    <string name="star_details">Star Details</string>
+    <string name="name">Name</string>
+    <string name="temperature">Temperature</string>
+    <string name="number_of_planets">Number of planets</string>
+    <string name="formatted_times_sun">%1$sx Sun</string>
 
 </resources>

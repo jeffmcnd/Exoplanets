@@ -9,6 +9,7 @@ import com.aidanlaing.exoplanets.R
 import com.aidanlaing.exoplanets.common.Constants
 import com.aidanlaing.exoplanets.common.Injector
 import com.aidanlaing.exoplanets.common.extensions.defaultIfBlank
+import com.aidanlaing.exoplanets.common.extensions.setFormattedTextWithDefaultIfBlank
 import com.aidanlaing.exoplanets.common.glide.ColorTransformation
 import com.aidanlaing.exoplanets.common.glide.GlideApp
 import com.aidanlaing.exoplanets.common.glide.GlideListener
@@ -35,9 +36,9 @@ class PlanetDetailActivity : AppCompatActivity() {
                 .get(PlanetDetailViewModel::class.java)
 
         startEnterTransition(planet)
-        setPlanetData(planet)
         setUpBackListener(viewModel)
         setUpFavouriteListener(viewModel, planet)
+        setPlanetData(planet)
     }
 
     private fun showToast(message: String) {
@@ -63,16 +64,6 @@ class PlanetDetailActivity : AppCompatActivity() {
                 .into(planetImageIv)
     }
 
-    private fun setPlanetData(planet: Planet) {
-        planetNameTv.text = planet.name
-
-        val distance = planet.getDistanceParsecs().defaultIfBlank(getString(R.string.unknown))
-        planetDistanceTv.text = getString(
-                R.string.formatted_parsecs_away,
-                distance
-        )
-    }
-
     private fun setUpBackListener(viewModel: PlanetDetailViewModel) {
         viewModel.onBackEvent().observe(this, NonNullObserver { event ->
             event.invokeIfNotHandled {
@@ -95,5 +86,79 @@ class PlanetDetailActivity : AppCompatActivity() {
         favouriteIv.setOnClickListener {
             viewModel.favouriteClicked(planet)
         }
+    }
+
+    private fun setPlanetData(planet: Planet) {
+        planetNameTv.text = planet.name
+
+        val planetDistance = planet.getDistanceParsecsOrBlank()
+                .defaultIfBlank(getString(R.string.unknown))
+        planetDistanceValueTv.text = getString(
+                R.string.formatted_parsecs_away,
+                planetDistance
+        )
+
+        planetDiscoveryYearValueTv.text = planet.discoveryYear
+
+        val planetDiscoveryMethod = planet.getDiscoveryMethodOrBlank()
+                .defaultIfBlank(getString(R.string.unknown))
+        planetDiscoveryMethodValueTv.text = planetDiscoveryMethod
+
+        val planetRadius = planet.getJupiterRadiusOrBlank()
+        planetRadiusValueTv.setFormattedTextWithDefaultIfBlank(
+                planetRadius,
+                getString(R.string.formatted_times_jupiter, planetRadius),
+                getString(R.string.unknown)
+        )
+
+        val planetMass = planet.getJupiterMassOrBlank()
+        planetMassValueTv.setFormattedTextWithDefaultIfBlank(
+                planetMass,
+                getString(R.string.formatted_times_jupiter, planetMass),
+                getString(R.string.unknown)
+        )
+
+        val planetDensity = planet.getDensityOrBlank()
+        planetDensityValueTv.setFormattedTextWithDefaultIfBlank(
+                planetDensity,
+                getString(R.string.formatted_g_per_cm_cubed, planetDensity),
+                getString(R.string.unknown)
+        )
+
+        val orbitalPeriodDays = planet.getOrbitalPeriodDaysOrBlank()
+        planetOrbitalPeriodValueTv.setFormattedTextWithDefaultIfBlank(
+                orbitalPeriodDays,
+                getString(R.string.formatted_days, orbitalPeriodDays),
+                getString(R.string.unknown)
+        )
+
+        val starName = planet.getStarNameOrBlank()
+                .defaultIfBlank(getString(R.string.unknown))
+        starNameValueTv.text = starName
+
+        val starTemp = planet.getStarTempKelvinOrBlank()
+        starTempValueTv.setFormattedTextWithDefaultIfBlank(
+                starTemp,
+                getString(R.string.formatted_kelvin, starTemp),
+                getString(R.string.unknown)
+        )
+
+        val starRadius = planet.getStarSunRadiusOrBlank()
+        starRadiusValueTv.setFormattedTextWithDefaultIfBlank(
+                starRadius,
+                getString(R.string.formatted_times_sun, starRadius),
+                getString(R.string.unknown)
+        )
+
+        val starMass = planet.getStarSunMassOrBlank()
+        starMassValueTv.setFormattedTextWithDefaultIfBlank(
+                starMass,
+                getString(R.string.formatted_times_sun, starMass),
+                getString(R.string.unknown)
+        )
+
+        val numberOfPlants = planet.getNumPlanetsInSystemOrBlank()
+                .defaultIfBlank(getString(R.string.unknown))
+        starNumberOfPlanetsValueTv.text = numberOfPlants
     }
 }

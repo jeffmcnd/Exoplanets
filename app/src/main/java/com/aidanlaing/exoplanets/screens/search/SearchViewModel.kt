@@ -74,7 +74,7 @@ class SearchViewModel(
         when (getPlanetsResult) {
             is Result.Success -> planets.value = getPlanetsResult.data
                     .filter { planet ->
-                        searchText.isBlank() || planet.name.contains(searchText, true)
+                        searchText.isNotBlank() && planet.name.contains(searchText, true)
                     }
                     .sortedWith(Comparator { planetOne, planetTwo ->
                         planetOne.compareTo(planetTwo)

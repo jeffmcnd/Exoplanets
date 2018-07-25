@@ -11,38 +11,36 @@ import kotlin.math.roundToInt
 data class Planet(
         val name: String,
         val discoveryYear: String,
-        var isFavourite: Boolean,
-        val letter: String?,
         val discoveryMethod: String?,
-        val numPlanetsInSystem: Int?,
-        val orbitalPeriodDays: Double?,
-        val jupiterMass: Double?,
         val jupiterRadius: Double?,
+        val jupiterMass: Double?,
         val density: Double?,
+        val orbitalPeriodDays: Double?,
         val starName: String?,
         val starDistanceParsecs: Double?,
         val starTemperatureKelvin: Double?,
+        val starSunRadius: Double?,
         val starSunMass: Double?,
-        val starSunRadius: Double?
+        val numPlanetsInSystem: Int?,
+        var isFavourite: Boolean
 ) : Mappable<PlanetLocal>, Parcelable {
 
     override fun mapToResult(): Result<PlanetLocal> {
         val localPlanet = PlanetLocal(
                 name,
                 discoveryYear,
-                isFavourite,
-                letter,
                 discoveryMethod,
-                numPlanetsInSystem,
-                orbitalPeriodDays,
-                jupiterMass,
                 jupiterRadius,
+                jupiterMass,
                 density,
+                orbitalPeriodDays,
                 starName,
                 starDistanceParsecs,
                 starTemperatureKelvin,
+                starSunRadius,
                 starSunMass,
-                starSunRadius
+                numPlanetsInSystem,
+                isFavourite
         )
 
         return Result.Success(localPlanet)
@@ -63,6 +61,26 @@ data class Planet(
 
     fun getPlanetImage() = PlanetImage.from(this)
 
-    fun getRoundedDistanceParsecs() = starDistanceParsecs?.roundToInt()?.toString() ?: ""
-    fun getDistanceParsecs() = starDistanceParsecs?.toString() ?: ""
+    fun getRoundedDistanceParsecsOrBlank() = starDistanceParsecs?.roundToInt()?.toString() ?: ""
+    fun getDistanceParsecsOrBlank() = starDistanceParsecs?.toString() ?: ""
+
+    fun getDiscoveryMethodOrBlank() = discoveryMethod ?: ""
+
+    fun getJupiterRadiusOrBlank() = jupiterRadius?.toString() ?: ""
+
+    fun getJupiterMassOrBlank() = jupiterMass?.toString() ?: ""
+
+    fun getDensityOrBlank() = density?.toString() ?: ""
+
+    fun getOrbitalPeriodDaysOrBlank() = orbitalPeriodDays?.toString() ?: ""
+
+    fun getStarNameOrBlank() = starName ?: ""
+
+    fun getStarTempKelvinOrBlank() = starTemperatureKelvin?.toString() ?: ""
+
+    fun getStarSunRadiusOrBlank() = starSunRadius?.toString() ?: ""
+
+    fun getStarSunMassOrBlank() = starSunMass?.toString() ?: ""
+
+    fun getNumPlanetsInSystemOrBlank() = numPlanetsInSystem?.toString() ?: ""
 }

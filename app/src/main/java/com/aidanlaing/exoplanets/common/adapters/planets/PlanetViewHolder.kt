@@ -35,14 +35,14 @@ class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         planetNameTv.text = planet.name
 
-        val distance = planet.getRoundedDistanceParsecs()
+        val distance = planet.getRoundedDistanceParsecsOrBlank()
                 .defaultIfBlank(context.getString(R.string.unknown))
         planetDistanceTv.text = context.getString(
                 R.string.formatted_parsecs_away,
                 distance
         )
 
-        planetPublishedDateTv.text = context.getString(
+        planetDiscoveryYearTv.text = context.getString(
                 R.string.formatted_discovered_in,
                 planet.discoveryYear
         )
