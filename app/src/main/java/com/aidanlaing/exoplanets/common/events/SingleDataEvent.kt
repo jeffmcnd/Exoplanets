@@ -1,6 +1,6 @@
 package com.aidanlaing.exoplanets.common.events
 
-class SingleDataEvent<T>(private var data: T) {
+class SingleDataEvent<T>(val data: T) {
 
     private var handled: Boolean = false
 

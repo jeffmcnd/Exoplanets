@@ -90,11 +90,13 @@ class PlanetsViewModel(
         }
 
         when (getPlanetsResult) {
-            is Result.Success -> planets.value = getPlanetsResult.data
-                    .sortedWith(Comparator { planetOne, planetTwo ->
-                        planetOne.compareTo(planetTwo)
-                    })
-                    .mapTo(ArrayList()) { it }
+            is Result.Success -> planets.value = withContext(ioContext) {
+                getPlanetsResult.data
+                        .sortedWith(Comparator { planetOne, planetTwo ->
+                            planetOne.compareTo(planetTwo)
+                        })
+                        .mapTo(ArrayList()) { it }
+            }
 
             is Result.Failure -> onError(getPlanetsResult.error)
         }

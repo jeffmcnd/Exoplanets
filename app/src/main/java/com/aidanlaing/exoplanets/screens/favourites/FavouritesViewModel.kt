@@ -67,9 +67,9 @@ class FavouritesViewModel(
         }
 
         when (getFavouritePlanetsResult) {
-            is Result.Success -> favouritePlanets.value = getFavouritePlanetsResult
-                    .data.reversed()
-                    .let { ArrayList(it) }
+            is Result.Success -> favouritePlanets.value = withContext(ioContext) {
+                getFavouritePlanetsResult.data.reversed().let { ArrayList(it) }
+            }
 
             is Result.Failure -> showGeneralError.value = true
         }

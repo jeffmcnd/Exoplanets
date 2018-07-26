@@ -11,18 +11,18 @@ import kotlin.math.roundToInt
 data class Planet(
         val name: String,
         val discoveryYear: String,
-        val discoveryMethod: String?,
-        val jupiterRadius: Double?,
-        val jupiterMass: Double?,
-        val density: Double?,
-        val orbitalPeriodDays: Double?,
-        val starName: String?,
-        val starDistanceParsecs: Double?,
-        val starTemperatureKelvin: Double?,
-        val starSunRadius: Double?,
-        val starSunMass: Double?,
-        val numPlanetsInSystem: Int?,
-        var isFavourite: Boolean
+        val discoveryMethod: String? = null,
+        val jupiterRadius: Double? = null,
+        val jupiterMass: Double? = null,
+        val density: Double? = null,
+        val orbitalPeriodDays: Double? = null,
+        val starName: String? = null,
+        val starDistanceParsecs: Double? = null,
+        val starTemperatureKelvin: Double? = null,
+        val starSunRadius: Double? = null,
+        val starSunMass: Double? = null,
+        val numPlanetsInSystem: Int? = null,
+        var isFavourite: Boolean = false
 ) : Mappable<PlanetLocal>, Parcelable {
 
     override fun mapToResult(): Result<PlanetLocal> {

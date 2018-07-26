@@ -65,6 +65,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 }
 
 kotlin {

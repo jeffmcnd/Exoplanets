@@ -72,14 +72,16 @@ class SearchViewModel(
         }
 
         when (getPlanetsResult) {
-            is Result.Success -> planets.value = getPlanetsResult.data
-                    .filter { planet ->
-                        searchText.isNotBlank() && planet.name.contains(searchText, true)
-                    }
-                    .sortedWith(Comparator { planetOne, planetTwo ->
-                        planetOne.compareTo(planetTwo)
-                    })
-                    .mapTo(ArrayList()) { it }
+            is Result.Success -> planets.value = withContext(ioContext) {
+                getPlanetsResult.data
+                        .filter { planet ->
+                            searchText.isNotBlank() && planet.name.contains(searchText, true)
+                        }
+                        .sortedWith(Comparator { planetOne, planetTwo ->
+                            planetOne.compareTo(planetTwo)
+                        })
+                        .mapTo(ArrayList()) { it }
+            }
 
             is Result.Failure -> onError(getPlanetsResult.error)
         }

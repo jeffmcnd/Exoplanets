@@ -47,4 +47,5 @@ ext {
     okHttpVersion = '3.11.0'
 
     junitVersion = '4.12'
+    mockitoKotlinVersion = '2.0.0-RC1'
 }
