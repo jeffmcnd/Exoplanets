@@ -30,11 +30,11 @@ class PlanetsViewModel(
     private val goToSearchEvent = MutableLiveData<SingleEvent>()
     private val showActions = MutableLiveData<Boolean>()
 
-    fun getPlanets(): LiveData<ArrayList<Planet>> {
-        if (planets.value == null) loadPlanets()
-        return planets
+    init {
+        loadPlanets()
     }
 
+    fun getPlanets(): LiveData<ArrayList<Planet>> = planets
     fun goToDetailEvent(): LiveData<SingleDataEvent<PlanetClick>> = goToDetailEvent
     fun planetClicked(planetClick: PlanetClick) {
         goToDetailEvent.value = SingleDataEvent(planetClick)
